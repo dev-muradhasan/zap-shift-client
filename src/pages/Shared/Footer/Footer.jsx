@@ -18,8 +18,8 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="px-3 py-5 md:px-6">
-            <div className="mx-auto max-w-300 rounded-[22px] bg-[#0b0b0b] px-6 py-12 text-white md:px-12">
+        <footer className=" py-5 ">
+            <div className="rounded-xl md:rounded-2xl bg-[#0b0b0b] px-6 py-12 text-white md:px-12">
 
                 {/* Logo + Description */}
                 <div className="text-center">
