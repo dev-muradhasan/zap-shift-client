@@ -11,6 +11,7 @@
    --color-primary: #03373D;
    --color-secondary: #606060;
    --color-accent: #DADADA;
+   --color-accent-content: #CAEB66
  }
 
 
@@ -18,4 +19,85 @@ body {
   font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+}
+
+
+
+@keyframes brandScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.brand-marquee {
+  animation: brandScroll 15s linear infinite;
+}
+
+
+
+/* Testimonial Card */
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 22px;
+  min-height: 215px;
+  transition:
+    transform 600ms ease,
+    opacity 600ms ease,
+    box-shadow 600ms ease;
+}
+
+/* Side cards */
+.testimonial-swiper .swiper-slide {
+  opacity: 0.25;
+  transform: scale(0.92);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+}
+
+/* Center active card */
+.testimonial-swiper .swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Pagination */
+.testimonial-pagination .swiper-pagination-bullet {
+  width: 7px;
+  height: 7px;
+  background: #91cbd0;
+  opacity: 1;
+  margin: 0 !important;
+  transition: all 300ms ease;
+}
+
+/* Active dot */
+.testimonial-pagination .swiper-pagination-bullet-active {
+  width: 7px;
+  height: 7px;
+  background: #03373D;
+}
+
+/* Remove default swiper overflow issue */
+.testimonial-swiper {
+  overflow: visible !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .testimonial-card {
+    padding: 24px 20px;
+  }
+  .testimonial-swiper .swiper-slide {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  .testimonial-swiper .swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Awlad Hossin",
+    "designation": "Senior Product Designer",
+    "review": "A posture corrector works by providing support and gentle alignment to your shoulders, back, and spine, encouraging you to maintain proper posture throughout the day.",
+    "image": "https://i.pravatar.cc/150?img=12"
+  },
+  {
+    "id": 2,
+    "name": "Rachel Ahmed",
+    "designation": "CTO",
+    "review": "The delivery service has made my daily work much easier. The team is professional, friendly, and always delivers my packages safely and on time.",
+    "image": "https://i.pravatar.cc/150?img=32"
+  },
+  {
+    "id": 3,
+    "name": "Nasir Uddin",
+    "designation": "CEO",
+    "review": "I am really impressed with their service quality. Everything was handled smoothly, and my parcel arrived earlier than I expected.",
+    "image": "https://i.pravatar.cc/150?img=11"
+  },
+  {
+    "id": 4,
+    "name": "Sarah Karim",
+    "designation": "Marketing Manager",
+    "review": "Their delivery process is simple and reliable. I can easily track my packages and always receive them in perfect condition.",
+    "image": "https://i.pravatar.cc/150?img=44"
+  },
+  {
+    "id": 5,
+    "name": "Tanvir Hasan",
+    "designation": "Software Engineer",
+    "review": "I have used their delivery service several times and every experience has been great. Fast delivery and excellent customer support.",
+    "image": "https://i.pravatar.cc/150?img=15"
+  },
+  {
+    "id": 6,
+    "name": "Sadia Islam",
+    "designation": "UI/UX Designer",
+    "review": "What I like most is their commitment to customers. They respond quickly and make sure every delivery reaches the right destination.",
+    "image": "https://i.pravatar.cc/150?img=47"
+  },
+  {
+    "id": 7,
+    "name": "Rafi Ahmed",
+    "designation": "Business Consultant",
+    "review": "The service is very convenient for both personal and business deliveries. Their professional approach gives me confidence every time.",
+    "image": "https://i.pravatar.cc/150?img=68"
+  },
+  {
+    "id": 8,
+    "name": "Nusrat Jahan",
+    "designation": "Content Creator",
+    "review": "I absolutely love how easy the whole process is. From booking a delivery to receiving the package, everything feels quick and hassle-free.",
+    "image": "https://i.pravatar.cc/150?img=49"
+  }
+]

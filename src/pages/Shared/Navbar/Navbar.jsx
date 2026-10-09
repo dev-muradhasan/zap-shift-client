@@ -36,8 +36,8 @@ const Navbar = () => {
                                 to={link.path}
                                 className={({ isActive }) =>
                                     `text-sm font-medium transition ${isActive
-                                        ? "text-[#222]"
-                                        : "text-secondary hover:text-gray-900"
+                                        ? "text-[#b4e83b]"
+                                        : "text-secondary hover:text-[#b4e83b]"
                                     }`
                                 }
                             >
@@ -57,7 +57,7 @@ const Navbar = () => {
 
                         <Link
                             to="/signup"
-                            className="rounded-xl bg-[#c2f34b] px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b]"
+                            className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b]"
                         >
                             Sign Up
                         </Link>
@@ -89,7 +89,7 @@ const Navbar = () => {
                                     key={link.path}
                                     to={link.path}
                                     onClick={() => setOpen(false)}
-                                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-secondary hover:bg-gray-50 hover:text-gray-900"
                                 >
                                     {link.name}
                                 </NavLink>
@@ -106,7 +106,7 @@ const Navbar = () => {
 
                             <Link
                                 to="/signup"
-                                className="flex-1 rounded-xl bg-[#c2f34b] py-2.5 text-center text-sm font-semibold"
+                                className="flex-1 rounded-xl bg-accent-content py-2.5 text-center text-sm font-semibold"
                             >
                                 Sign Up
                             </Link>
