@@ -24,9 +24,9 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
 
                     {/* Logo */}
-                    <div>
+                    <Link to={'/'}>
                         <Logo></Logo>
-                    </div>
+                    </Link>
 
                     {/* Desktop Menu */}
                     <div className="hidden items-center gap-7 lg:flex">
@@ -36,8 +36,8 @@ const Navbar = () => {
                                 to={link.path}
                                 className={({ isActive }) =>
                                     `text-sm font-medium transition ${isActive
-                                        ? "text-[#b4e83b]"
-                                        : "text-secondary hover:text-[#c2f34b]"
+                                        ? "bg-accent-content py-1 px-2.5 rounded-2xl"
+                                        : "text-secondary hover:text-[#9fca32]"
                                     }`
                                 }
                             >
