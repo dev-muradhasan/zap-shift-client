@@ -52,8 +52,7 @@ body {
 
 /* Side cards */
 .testimonial-swiper .swiper-slide {
-  opacity: 0.25;
-  transform: scale(0.92);
+  opacity: 40;
   transition:
     opacity 600ms ease,
     transform 600ms ease;
@@ -92,10 +91,7 @@ body {
   .testimonial-card {
     padding: 24px 20px;
   }
-  .testimonial-swiper .swiper-slide {
-    opacity: 0.3;
-    transform: scale(0.95);
-  }
+
   .testimonial-swiper .swiper-slide-active {
     opacity: 1;
     transform: scale(1);

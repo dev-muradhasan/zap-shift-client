@@ -8,6 +8,7 @@ import {
     Navigation,
     Pagination,
     Autoplay,
+    EffectCoverflow,
 } from "swiper/modules";
 
 import "swiper/css";
@@ -57,39 +58,37 @@ const Reviews = ({ reviewPromise }) => {
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
+                        effect={'coverflow'}
                         modules={[
                             Navigation,
                             Pagination,
                             Autoplay,
+                            EffectCoverflow,
                         ]}
-                        loop={true}
-                        centeredSlides={true}
-                        slidesPerView={1}
-                        spaceBetween={20}
-                        speed={600}
+                        coverflowEffect={{
+                            rotate: 30,
+                            stretch: 70,
+                            depth: 200,
+                            modifier: 1,
+                            slideShadows: true,
+                            loop: true,
+                            speed: 600,
+                            slidesPerView: 1,
+                            centeredSlides: true,
+                            scale: 0.80,
+                        }}
                         autoplay={{
                             delay: 2000,
                             disableOnInteraction: false,
-                            reverseDirection: true,
                         }}
+
                         pagination={{
                             el: ".testimonial-pagination",
                             clickable: true,
                         }}
                         breakpoints={{
-                            640: {
-                                slidesPerView: 1.5,
-                                spaceBetween: 20,
-                            },
-
                             768: {
-                                slidesPerView: 2,
-                                spaceBetween: 20,
-                            },
-
-                            1024: {
                                 slidesPerView: 3,
-                                spaceBetween: 20,
                             },
                         }}
                         className="testimonial-swiper"

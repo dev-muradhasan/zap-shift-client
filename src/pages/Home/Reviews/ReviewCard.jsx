@@ -9,9 +9,9 @@ const TestimonialCard = ({ reviewInfo }) => {
     } = reviewInfo;
 
     return (
-        <div className="testimonial-card h-60">
+        <div className="testimonial-card">
             {/* Quote */}
-            <FaQuoteLeft className="text-3xl text-[#92c7cc] mb-4" />
+            <FaQuoteLeft className="text-3xl text-accent-content mb-4" />
 
             {/* Review */}
             <p className="text-sm leading-5 text-secondary">
