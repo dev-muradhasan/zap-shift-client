@@ -19,9 +19,9 @@ const BeAMerchant = () => {
                 <div className="grid min-h-67 grid-cols-1 items-center px-6 py-10 sm:px-10 md:grid-cols-2 md:px-12 md:py-12">
                     {/* Left content */}
                     <div className="relative z-10">
-                        <h2 className="relative w-max max-w-none text-2xl font-bold leading-tight text-white sm:text-3xl">
+                        <h2 className="relative w-max max-w-none text-[22px] font-bold leading-tight text-white sm:text-3xl">
                             Merchant and Customer Satisfaction
-                            <br className="hidden lg:block" /> is Our First Priority
+                            <br className="" /> is Our First Priority
                         </h2>
 
                         <p className="mt-3 max-w-md text-xs leading-[1.8] text-accent">

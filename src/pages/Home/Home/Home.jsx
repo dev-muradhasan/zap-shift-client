@@ -1,6 +1,7 @@
 import Banner from "../Banner/Banner";
 import BeAMerchant from "../BeAMerchant/BeAMerchant";
 import Brands from "../Brands/Brands";
+import FAQ from "../FAQ/FAQ";
 import Features from "../Features/Features";
 import HowItWorks from "../HowItWorks/HowItWorks";
 import OurServices from "../OurServices/OurServices";
@@ -32,6 +33,9 @@ const Home = () => {
             </div>
             <div>
                 <Reviews reviewPromise={reviewPromise}></Reviews>
+            </div>
+            <div>
+                <FAQ></FAQ>
             </div>
         </div>
     );

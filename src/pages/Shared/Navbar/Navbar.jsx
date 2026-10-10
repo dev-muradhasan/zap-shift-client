@@ -37,7 +37,7 @@ const Navbar = () => {
                                 className={({ isActive }) =>
                                     `text-sm font-medium transition ${isActive
                                         ? "text-[#b4e83b]"
-                                        : "text-secondary hover:text-[#b4e83b]"
+                                        : "text-secondary hover:text-[#c2f34b]"
                                     }`
                                 }
                             >
