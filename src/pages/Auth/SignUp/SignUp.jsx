@@ -1,5 +1,4 @@
-import { Link } from "react-router";
-import userImg from '../../../assets/image-upload-icon.png'
+import { Link, useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
@@ -7,18 +6,46 @@ import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 
 
-
-
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { registerUser } = useAuth();
+    const { registerUser, updateUserProfile } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const handleRegister = (data) => {
+    const uploadImage = async (imageFile) => {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        formData.append(
+            "upload_preset",
+            import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+        );
+        const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error?.message || "Image upload failed");
+        };
+        return data.secure_url;
+    }
+
+    const handleRegister = async (data) => {
         console.log(data);
+        const imageFile = data.photo[0];
+        const photoURL = await uploadImage(imageFile);
+        const profile = { displayName: data.name, photoURL }
         registerUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
+                updateUserProfile(profile)
+                    .then(() => console.log('user profile update done.'))
+                    navigate(location.state || '/')
+                    .catch(err => console.log(err.message))
             })
             .catch(error => {
                 console.log(error.message);
@@ -39,16 +66,25 @@ const SignUp = () => {
                 </p>
             </div>
 
-            {/* User Icon */}
-            <div className="mb-4">
-                <div className="w-10 h-10 rounded-full bg-[#f1f3f4] flex items-center justify-center">
-                    <img src={userImg} alt="" />
-                </div>
-            </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit(handleRegister)} className="space-y-1">
 
+                {/* Photo */}
+                <fieldset className="fieldset">
+                    <legend className="fieldset-legend text-sm font-medium text-primary pb-1">
+                        Photo
+                    </legend>
+                    <input
+                        {...register("photo", { required: true })}
+                        type="file"
+                        placeholder="Choose photo"
+                        className="file-input input-bordered w-full h-10 min-h-10 text-sm"
+                    />
+                    {errors.photo?.type === "required" && (
+                        <p role="alert" className="text-red-500">Photo is required</p>
+                    )}
+                </fieldset>
                 {/* Name */}
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend text-sm font-medium text-primary pb-1">
@@ -142,6 +178,7 @@ const SignUp = () => {
             <p className="text-xs font-semibold text-gray-400 text-center mt-3">
                 Already have an account?{" "}
                 <Link
+                    state={location.state}
                     to="/signin"
                     className="text-[#849f35] hover:underline"
                 >

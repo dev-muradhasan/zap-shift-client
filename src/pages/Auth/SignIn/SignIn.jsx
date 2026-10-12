@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate,  } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 
@@ -12,12 +12,16 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { signInUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
 
   const handleLogin = (data) => {
     console.log(data);
     signInUser(data.email, data.password)
       .then(result => {
         console.log(result.user);
+        navigate(location?.state || '/')
       })
       .catch(error => {
         console.log(error.message);
@@ -125,6 +129,7 @@ const SignIn = () => {
       <p className="text-xs font-semibold text-gray-400 text-center mt-3">
         Don't have an account?{" "}
         <Link
+          state={location.state}
           to="/signup"
           className="text-[#849f35] hover:underline"
         >

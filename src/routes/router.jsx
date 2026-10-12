@@ -7,11 +7,16 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AuthLayout from "../layouts/AuthLayout";
 import SignIn from "../pages/Auth/SignIn/SignIn";
 import SignUp from "../pages/Auth/SignUp/SignUp";
+import PrivateRoute from "./PrivateRoute";
+import Rider from "../pages/Rider/Rider";
+import SendParcel from "../pages/sendParcel/SendParcel";
+import Loading from "../components/Loading/Loading";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         Component: RootLayout,
+        hydrateFallbackElement: <Loading></Loading>,
         children: [
             {
                 index: true,
@@ -25,6 +30,15 @@ export const router = createBrowserRouter([
             {
                 path: '/about',
                 Component: AboutUs,
+            },
+            {
+                path: '/parcel',
+                element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
+                loader: () => fetch('serviceCenters.json').then(res=>res.json()),
+            },
+            {
+                path: '/rider',
+                element: <PrivateRoute><Rider></Rider></PrivateRoute>
             },
             {
                 path: "*",

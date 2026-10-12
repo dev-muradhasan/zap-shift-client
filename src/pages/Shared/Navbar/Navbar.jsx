@@ -24,8 +24,8 @@ const Navbar = () => {
         { name: "Coverage", path: "/coverage" },
         { name: "About Us", path: "/about" },
         { name: "Pricing", path: "/pricing" },
-        { name: "Blog", path: "/blog" },
-        { name: "Contact", path: "/contact" },
+        { name: "Send Parcel", path: "/parcel" },
+        { name: "Be a Rider", path: "/rider" },
     ];
 
     return (
@@ -73,14 +73,14 @@ const Navbar = () => {
                                     </Link>
 
                                     <Link
-                                        to="/"
+                                        to="/signup"
                                         className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b]"
                                     >
-                                        Be a Rider
+                                        Sign Up
                                     </Link>
 
                                     <Link
-                                        to="/"
+                                        to="/signup"
                                         className="flex h-10 w-10 items-center justify-center rounded-full bg-[#222] text-[#c2f34b] transition hover:scale-105"
                                     >
                                         {/* <FaArrowUpRightFromSquare className="text-sm" /> */}

@@ -1,21 +1,19 @@
-import { FadeLoader } from "react-spinners";
+
+import Loading from "../components/Loading/Loading";
 import useAuth from "../hooks/useAuth";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 
 const PrivateRoute = ({children}) => {
     const {user, loading} = useAuth();
+    const location = useLocation();
 
     if(loading){
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#eef0f1]">
-                <FadeLoader color="#36d7b7" />
-            </div>
-        );
+        return <Loading></Loading>;
     }
 
     if(!user){
-        return <Navigate to={'/signin'}></Navigate>
+        return <Navigate to={'/signin'} state={location.pathname}></Navigate>
     }
 
 
