@@ -2,12 +2,22 @@ import Logo from "../../../components/Logo/Logo";
 
 
 import { Link, NavLink } from "react-router";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaArrowRightFromBracket } from "react-icons/fa6";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
+    const { user, logOut } = useAuth();
+
+    const handleSignOut = () => {
+        logOut()
+            .then()
+            .catch(error => {
+                console.log(error);
+            })
+    }
 
     const navLinks = [
         { name: "Services", path: "/services" },
@@ -46,27 +56,40 @@ const Navbar = () => {
 
                     {/* Right Side */}
                     <div className="hidden items-center sm:flex">
-                        <Link
-                            to="/signin"
-                            className="rounded-xl mr-2 border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
-                        >
-                            Sign In
-                        </Link>
+                        {
+                            user ? (<button
+                                onClick={handleSignOut}
+                                className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b] flex items-center justify-center gap-2"
+                            >
+                                <FaArrowRightFromBracket />
+                                Sign Out
+                            </button>) : (
+                                <>
+                                    <Link
+                                        to="/signin"
+                                        className="rounded-xl mr-2 border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
+                                    >
+                                        Sign In
+                                    </Link>
 
-                        <Link
-                            to="/signup"
-                            className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b]"
-                        >
-                            Sign Up
-                        </Link>
+                                    <Link
+                                        to="/"
+                                        className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b]"
+                                    >
+                                        Be a Rider
+                                    </Link>
 
-                        <Link
-                            to="/signup"
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#222] text-[#c2f34b] transition hover:scale-105"
-                        >
-                            {/* <FaArrowUpRightFromSquare className="text-sm" /> */}
-                            <FaArrowRight size={18} className="-rotate-45" />
-                        </Link>
+                                    <Link
+                                        to="/"
+                                        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#222] text-[#c2f34b] transition hover:scale-105"
+                                    >
+                                        {/* <FaArrowUpRightFromSquare className="text-sm" /> */}
+                                        <FaArrowRight size={18} className="-rotate-45" />
+                                    </Link>
+                                </>
+                            )
+                        }
+
                     </div>
 
                     {/* Mobile Menu Button */}
