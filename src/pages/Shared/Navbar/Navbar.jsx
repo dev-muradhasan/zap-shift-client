@@ -24,9 +24,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
 
                     {/* Logo */}
-                    <Link to={'/'}>
-                        <Logo></Logo>
-                    </Link>
+                    <Logo></Logo>
 
                     {/* Desktop Menu */}
                     <div className="hidden items-center gap-7 lg:flex">
@@ -63,7 +61,7 @@ const Navbar = () => {
                         </Link>
 
                         <Link
-                            to="/"
+                            to="/signup"
                             className="flex h-10 w-10 items-center justify-center rounded-full bg-[#222] text-[#c2f34b] transition hover:scale-105"
                         >
                             {/* <FaArrowUpRightFromSquare className="text-sm" /> */}
