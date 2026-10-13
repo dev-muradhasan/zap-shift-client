@@ -1,5 +1,6 @@
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 
 const SendParcel = () => {
@@ -20,6 +21,41 @@ const SendParcel = () => {
    
     const handleSendParcel = (data) =>{
         console.log(data);
+        const isDocument = data.parcelType ==='document';
+        const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+        const parcelWeight = parseFloat(data.weight);
+
+        let cost = 0;
+        if(isDocument){
+            cost = isSameDistrict ? 60 : 80;
+        }
+        else{
+            if(parcelWeight <= 3){
+                cost = isSameDistrict ? 110 : 150;
+            }
+            else{
+                const minCharge = isSameDistrict ? 110 : 150;
+                const extraWeight = parcelWeight - 3;
+                const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
+                cost = minCharge + extraCharge;
+            }
+        }
+        console.log('cost:', cost);
+        Swal.fire({
+            title: "Agree with the Cost?",
+            text: `You will be charged ${cost} tk`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) Swal.fire({
+                title: "Cancel!",
+                text: "Your parcel has been deleted.",
+                icon: "success"
+            });
+        });
     }
 
     return (
