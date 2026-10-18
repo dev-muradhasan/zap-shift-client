@@ -2,10 +2,11 @@ import Logo from "../../../components/Logo/Logo";
 
 
 import { Link, NavLink } from "react-router";
-import { FaArrowRight, FaArrowRightFromBracket } from "react-icons/fa6";
+import { FaArrowRight, FaArrowRightFromBracket, FaChevronDown } from "react-icons/fa6";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = () => {
         { name: "Coverage", path: "/coverage" },
         { name: "About Us", path: "/about" },
         { name: "Pricing", path: "/pricing" },
-        { name: "Send Parcel", path: "/parcel" },
+        { name: "Send Parcel", path: "/dashboard/parcel" },
         { name: "Be a Rider", path: "/rider" },
     ];
 
@@ -57,13 +58,60 @@ const Navbar = () => {
                     {/* Right Side */}
                     <div className="hidden items-center sm:flex">
                         {
-                            user ? (<button
-                                onClick={handleSignOut}
-                                className="rounded-xl bg-accent-content px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#b4e83b] flex items-center justify-center gap-2"
-                            >
-                                <FaArrowRightFromBracket />
-                                Sign Out
-                            </button>) : (
+                            user ? (<div className="dropdown dropdown-end">
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="flex items-center gap-3 px-3 transition bg-gray-50 rounded-2xl" 
+                                >
+                                    {user.photoURL ? (
+                                        <img
+                                            src={user.photoURL}
+                                            alt={"User"}
+                                            className="h-10 w-10 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                                            <FaUserCircle className="text-3xl text-gray-500" />
+                                        </div>
+                                    )}
+
+                                    <div className="max-w-32 text-left">
+                                        <p className="truncate text-sm font-semibold text-gray-800">
+                                            {user.displayName || "User"}
+                                        </p>
+                                        <p className="text-xs text-gray-500">My Account</p>
+                                    </div>
+
+                                    <FaChevronDown className="text-xs text-gray-500" />
+                                </div>
+
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content menu z-50 mt-3 w-56 rounded-xl border border-gray-100 bg-white p-2 shadow-lg"
+                                >
+                                    <li>
+                                        <Link to="/">
+                                            Home
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/dashboard/parcel">
+                                            Dashboard
+                                        </Link>
+                                    </li>
+
+                                    <li className="mt-1 border-t border-gray-100 pt-1">
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="flex items-center gap-2 text-red-600 hover:bg-red-50"
+                                        >
+                                            <FaArrowRightFromBracket />
+                                            Sign Out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>) : (
                                 <>
                                     <Link
                                         to="/signin"
@@ -117,21 +165,94 @@ const Navbar = () => {
                             ))}
                         </div>
 
-                        <div className="mt-3 flex border-t border-gray-100 pt-3">
-                            <Link
-                                to="/signin"
-                                className="flex-1 mr-2 rounded-xl border border-gray-200 py-2.5 text-center text-sm font-semibold"
-                            >
-                                Sign In
-                            </Link>
+                        {/* Mobile User Dropdown */}
+                        {user ? (
+                            <div className="dropdown dropdown-end mt-3 w-full">
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-3"
+                                >
+                                    <div className="flex min-w-0 items-center gap-3">
+                                        {user.photoURL ? (
+                                            <img
+                                                src={user.photoURL}
+                                                alt={ "User"}
+                                                className="h-10 w-10 rounded-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-2xl text-gray-500">
+                                                <FaUserCircle />
+                                            </div>
+                                        )}
 
-                            <Link
-                                to="/signup"
-                                className="flex-1 rounded-xl bg-accent-content py-2.5 text-center text-sm font-semibold"
-                            >
-                                Sign Up
-                            </Link>
-                        </div>
+                                        <div className="min-w-0 text-left">
+                                            <p className="truncate text-sm font-semibold text-gray-800">
+                                                {user.displayName || "User"}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                My Account
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <FaChevronDown className="ml-2 shrink-0 text-xs text-gray-500" />
+                                </div>
+
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content menu z-50 mt-2 w-full rounded-xl border border-gray-100 bg-white p-2 shadow-lg"
+                                >
+                                    <li>
+                                        <Link
+                                            to="/"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Home
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/dashboard/parcel"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                    </li>
+
+                                    <li className="mt-1 border-t border-gray-100 pt-1">
+                                        <button
+                                            onClick={() => {
+                                                setOpen(false);
+                                                handleSignOut();
+                                            }}
+                                            className="flex items-center gap-2 text-red-600 hover:bg-red-50"
+                                        >
+                                            <FaArrowRightFromBracket />
+                                            Sign Out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : (
+                            <div className="mt-3 flex border-t border-gray-100 pt-3">
+                                <Link
+                                    to="/signin"
+                                    onClick={() => setOpen(false)}
+                                    className="mr-2 flex-1 rounded-xl border border-gray-200 py-2.5 text-center text-sm font-semibold"
+                                >
+                                    Sign In
+                                </Link>
+
+                                <Link
+                                    to="/signup"
+                                    onClick={() => setOpen(false)}
+                                    className="flex-1 rounded-xl bg-accent-content py-2.5 text-center text-sm font-semibold"
+                                >
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 )}
             </nav>

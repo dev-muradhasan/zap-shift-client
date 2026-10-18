@@ -1,39 +1,45 @@
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 
 const SendParcel = () => {
-    const {register, handleSubmit, control, formState: {errors}} = useForm();
+    const {user} = useAuth();
+    const { register, handleSubmit, control,
+        // formState: {errors}
+    } = useForm();
+    const axiosSecure = useAxiosSecure();
 
     const serviceCenters = useLoaderData();
-    const regionsDuplicate = serviceCenters.map(c=>c.region);
+    const regionsDuplicate = serviceCenters.map(c => c.region);
     const regions = [...new Set(regionsDuplicate)];
-    const senderRegion = useWatch({control, name:'senderRegion'})
-    const receiverRegion = useWatch({ control, name: 'receiverRegion'})
-  
-    const districtByRegion = (region)=>{
-        const regionDistricts = serviceCenters.filter(r=>r.region===region);
-        const districts = regionDistricts.map(d=>d.district);
+    const senderRegion = useWatch({ control, name: 'senderRegion' })
+    const receiverRegion = useWatch({ control, name: 'receiverRegion' })
+
+    const districtByRegion = (region) => {
+        const regionDistricts = serviceCenters.filter(r => r.region === region);
+        const districts = regionDistricts.map(d => d.district);
         return districts;
     }
 
-   
-    const handleSendParcel = (data) =>{
+
+    const handleSendParcel = (data) => {
         console.log(data);
-        const isDocument = data.parcelType ==='document';
+        const isDocument = data.parcelType === 'document';
         const isSameDistrict = data.senderDistrict === data.receiverDistrict;
         const parcelWeight = parseFloat(data.weight);
 
         let cost = 0;
-        if(isDocument){
+        if (isDocument) {
             cost = isSameDistrict ? 60 : 80;
         }
-        else{
-            if(parcelWeight <= 3){
+        else {
+            if (parcelWeight <= 3) {
                 cost = isSameDistrict ? 110 : 150;
             }
-            else{
+            else {
                 const minCharge = isSameDistrict ? 110 : 150;
                 const extraWeight = parcelWeight - 3;
                 const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
@@ -43,18 +49,34 @@ const SendParcel = () => {
         console.log('cost:', cost);
         Swal.fire({
             title: "Agree with the Cost?",
-            text: `You will be charged ${cost} tk`,
+            text: `You have to pay ${cost} tk`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes"
+            confirmButtonText: "I agree"
         }).then((result) => {
-            if (result.isConfirmed) Swal.fire({
-                title: "Cancel!",
-                text: "Your parcel has been deleted.",
-                icon: "success"
-            });
+            if (result.isConfirmed) {
+                axiosSecure.post("/parcels", data)
+                    .then(res => {
+                        console.log("after getting parcel", res.data);
+
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Your parcel has been taken.",
+                            icon: "success"
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error adding parcel:", error);
+
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to add parcel.",
+                            icon: "error"
+                        });
+                    });
+            }
         });
     }
 
@@ -115,7 +137,7 @@ const SendParcel = () => {
                         </label>
 
                         <input
-                            { ...register('parcelName') }
+                            {...register('parcelName')}
                             type="text"
                             placeholder="Parcel Name"
                             className="input input-bordered input-sm w-full text-sm"
@@ -162,6 +184,7 @@ const SendParcel = () => {
                                     {...register('senderName')}
                                     type="text"
                                     placeholder="Sender Name"
+                                    defaultValue={user.displayName}
                                     className="input input-bordered input-sm w-full text-sm"
                                 />
                             </div>
@@ -177,6 +200,7 @@ const SendParcel = () => {
                                 <input
                                     {...register('senderEmail')}
                                     type="email"
+                                    defaultValue={user.email}
                                     placeholder="Sender Email"
                                     className="input input-bordered input-sm w-full text-sm"
                                 />

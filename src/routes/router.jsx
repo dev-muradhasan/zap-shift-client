@@ -11,6 +11,8 @@ import PrivateRoute from "./PrivateRoute";
 import Rider from "../pages/Rider/Rider";
 import SendParcel from "../pages/sendParcel/SendParcel";
 import Loading from "../components/Loading/Loading";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcel from "../pages/Dashboard/MyParcel/MyParcel";
 
 export const router = createBrowserRouter([
     {
@@ -30,11 +32,6 @@ export const router = createBrowserRouter([
             {
                 path: '/about',
                 Component: AboutUs,
-            },
-            {
-                path: '/parcel',
-                element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
-                loader: () => fetch('serviceCenters.json').then(res=>res.json()),
             },
             {
                 path: '/rider',
@@ -57,7 +54,58 @@ export const router = createBrowserRouter([
             {
                 path: '/signup',
                 Component: SignUp
-            }
+            },
+            {
+                path: "*",
+                element: <ErrorPage />
+            },
         ]
-    }
+    },
+    {
+        path: '/dashboard',
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        children: [
+            {
+                path: 'my_parcel',
+                element: <MyParcel></MyParcel>
+            },
+            {
+                path: 'parcel',
+                element: <SendParcel></SendParcel>,
+                loader: () => fetch('/serviceCenters.json').then(res => res.json()),
+            },
+            // {
+            //     path: "deliveries",
+            //     element: <AllDeliveries />,
+            // },
+            // {
+            //     path: "invoices",
+            //     element: <Invoices />,
+            // },
+            // {
+            //     path: "stores",
+            //     element: <Stores />,
+            // },
+            // {
+            //     path: "pricing",
+            //     element: <PricingPlan />,
+            // },
+            // {
+            //     path: "settings",
+            //     element: <Settings />,
+            // },
+            // {
+            //     path: "change-password",
+            //     element: <ChangePassword />,
+            // },
+            // {
+            //     path: "help",
+            //     element: <Help />,
+            // },
+            {
+                path: "*",
+                element: <ErrorPage />
+            },
+        ]
+    },
 ]);

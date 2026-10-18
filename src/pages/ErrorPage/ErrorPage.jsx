@@ -3,7 +3,7 @@ import errorImg from "../../assets/18499954_bubble_gum200_89 1.png"
 
 const ErrorPage = () => {
     return (
-        <div className="min-h-screen bg-[#eef0f1] my-5">
+        <div className="min-h-screen my-5">
 
             <div className="w-full min-h-125 bg-white rounded-2xl flex flex-col items-center justify-center text-center px-6">
 
