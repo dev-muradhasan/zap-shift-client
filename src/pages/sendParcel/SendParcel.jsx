@@ -46,7 +46,9 @@ const SendParcel = () => {
                 cost = minCharge + extraCharge;
             }
         }
-        console.log('cost:', cost);
+        // console.log('cost:', cost);
+        data.cost = cost;
+
         Swal.fire({
             title: "Agree with the Cost?",
             text: `You have to pay ${cost} tk`,
@@ -58,8 +60,8 @@ const SendParcel = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.post("/parcels", data)
-                    .then(res => {
-                        console.log("after getting parcel", res.data);
+                    .then(() => {
+                        // console.log("after getting parcel", res.data);
 
                         Swal.fire({
                             title: "Success!",
@@ -81,8 +83,8 @@ const SendParcel = () => {
     }
 
     return (
-        <div className="min-h-screen py-3 md:py-6">
-            <form onSubmit={handleSubmit(handleSendParcel)} className="mx-auto max-w-6xl rounded-2xl bg-white p-6 md:p-10 shadow-sm">
+        <div className="min-h-screen py-3">
+            <form onSubmit={handleSubmit(handleSendParcel)} className="mx-auto max-w-6xl rounded-2xl bg-white">
 
                 {/* Header */}
                 <div className="mb-8">

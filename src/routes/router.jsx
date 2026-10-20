@@ -13,6 +13,9 @@ import SendParcel from "../pages/sendParcel/SendParcel";
 import Loading from "../components/Loading/Loading";
 import DashboardLayout from "../layouts/DashboardLayout";
 import MyParcel from "../pages/Dashboard/MyParcel/MyParcel";
+import MyDashboard from "../pages/Dashboard/MyDashboard/MyDashboard";
+import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 
 export const router = createBrowserRouter([
     {
@@ -66,6 +69,10 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
         children: [
             {
+                index: true,
+                element: <MyDashboard></MyDashboard>
+            },
+            {
                 path: 'my_parcel',
                 element: <MyParcel></MyParcel>
             },
@@ -73,6 +80,14 @@ export const router = createBrowserRouter([
                 path: 'parcel',
                 element: <SendParcel></SendParcel>,
                 loader: () => fetch('/serviceCenters.json').then(res => res.json()),
+            },
+            {
+                path: "payment-success",
+                element: <PaymentSuccess />,
+            },
+            {
+                path: "payment-cancel",
+                element: <PaymentCancel />,
             },
             // {
             //     path: "deliveries",

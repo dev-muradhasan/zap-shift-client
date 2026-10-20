@@ -96,7 +96,7 @@ const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/dashboard/parcel">
+                                        <Link to="/dashboard">
                                             Dashboard
                                         </Link>
                                     </li>
@@ -213,7 +213,7 @@ const Navbar = () => {
                                     </li>
                                     <li>
                                         <Link
-                                            to="/dashboard/parcel"
+                                            to="/dashboard"
                                             onClick={() => setOpen(false)}
                                         >
                                             Dashboard

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import {
     FaBars,
     FaBell,
@@ -21,11 +21,11 @@ import {
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
+import { FaBoxOpen } from "react-icons/fa6";
 
 const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    const navigate = useNavigate();
 
     const { user, logOut } = useAuth();
 
@@ -38,8 +38,13 @@ const DashboardLayout = () => {
     const menuItems = [
         {
             title: "Dashboard",
-            path: "/dashboard/parcel",
+            path: "/dashboard",
             icon: <FaTachometerAlt />,
+        },
+        {
+            title: "Send Parcel",
+            path: "/dashboard/parcel",
+            icon: <FaBoxOpen />
         },
         {   
             title: "My Parcel",
@@ -210,7 +215,7 @@ const DashboardLayout = () => {
                 <header className="sticky top-0 z-30 flex h-15 items-center justify-between border-b border-gray-100 bg-white px-4 sm:px-6 lg:px-5">
                     <div className="flex items-center gap-4">
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => setSidebarOpen(true)}
                             className="text-lg cursor-pointer text-gray-600 transition hover:text-gray-900"
                             aria-label="Open sidebar"
                         >
@@ -272,7 +277,7 @@ const DashboardLayout = () => {
                                         Home
                                     </Link>
                                     <Link
-                                        to="/dashboard/parcel"
+                                        to="/dashboard"
                                         onClick={() => setProfileOpen(false)}
                                         className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50"
                                     >
@@ -294,7 +299,7 @@ const DashboardLayout = () => {
 
                 {/* Page Content */}
                 <main className="p-3 sm:p-5 lg:p-5">
-                    <div className="min-h-[calc(100vh-100px)] rounded-2xl bg-white p-4 sm:p-6 lg:p-7">
+                    <div className="min-h-[calc(100vh-100px)] rounded-2xl bg-white p-4 sm:p-6 lg:p-8">
                         <Outlet />
                     </div>
                 </main>
