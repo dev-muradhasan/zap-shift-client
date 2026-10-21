@@ -63,6 +63,9 @@ const MyParcel = () => {
             parcelId: parcel._id,
             senderEmail: parcel.senderEmail,
             parcelName: parcel.parcelName,
+            receiverName: parcel.receiverName,
+            receiverAddress: parcel.receiverAddress,
+            receiverPhnNb: parcel.receiverPhnNb,
         };
         const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
         window.location.assign(res.data.url);
@@ -70,7 +73,7 @@ const MyParcel = () => {
 
     return (
         <div className="w-full min-w-0">
-            <h2 className="mb-4 text-2xl font-bold text-primary sm:text-3xl">
+            <h2 className="mb-4 text-3xl font-bold text-primary sm:text-4xl">
                 All of my parcels {parcels.length}
             </h2>
 
@@ -102,8 +105,7 @@ const MyParcel = () => {
                             {parcels.map((parcel, index) => (
                                 <tr
                                     key={parcel._id || index}
-                                    className={`border-b border-base-200 ${index % 2 !== 0 ? "bg-gray-100" : "bg-white"
-                                        }`}
+                                    className={`border-b border-base-200 hover:bg-[#F0F7F7] even:bg-gray-100 odd:bg-white transition-colors`}
                                 >
                                     <td className="max-w-32.5 whitespace-normal wrap-break-word font-medium text-gray-600">
                                         {parcel.parcelName}

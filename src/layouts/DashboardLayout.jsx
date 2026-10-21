@@ -54,7 +54,7 @@ const DashboardLayout = () => {
                 
         {
             title: "All Deliveries",
-            path: "/dashboard/deliveries",
+            path: "/dashboard/payment-history",
             icon: <FaTruck />,
             expandable: true,
         },
