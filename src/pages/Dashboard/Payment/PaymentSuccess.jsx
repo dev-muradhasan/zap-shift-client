@@ -1,5 +1,5 @@
 
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import {
     FaCheck,
     FaBox,
@@ -10,13 +10,41 @@ import {
     FaHome,
     FaTruck,
 } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PaymentSuccess = () => {
-    const paymentDate = new Date().toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
+    const [paymentInfo, setPaymentInfo] = useState({});
+    const [searchParams] = useSearchParams();
+    const sessionId = searchParams.get('session_id');
+    const axiosSecure = useAxiosSecure();
+
+    useEffect(()=>{
+        if (sessionId){
+            axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+            .then(res=>{
+                // console.log(res.data)
+                setPaymentInfo({
+                    trackingId: res.data.trackingId,
+                    transactionId: res.data.transactionId,
+                    amount: res.data.amount,
+                    paidAt: res.data.paidAt,
+                })
+            })
+        }
+    }, [sessionId, axiosSecure])
+
+    const localDateTime = new Date(paymentInfo.paidAt).toLocaleString("en-GB", {
+        timeZone: "Asia/Dhaka",
+        day: "2-digit",
+        month: "2-digit",
         year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
     });
+
 
     return (
         <div className="min-h-screen bg-[#F8FAFA] px-4 py-10 rounded-2xl">
@@ -48,7 +76,7 @@ const PaymentSuccess = () => {
                 <div className="mt-8 rounded-2xl border border-[#DADADA] bg-white p-5 shadow-sm md:p-8">
                     <div className="grid gap-7 sm:grid-cols-2">
 
-                        {/* Parcel Name */}
+                        {/* Parcel trackingId */}
                         <div className="flex items-center gap-4">
                             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#CAEB66]/25 text-[#03373D]">
                                 <FaBox className="text-2xl" />
@@ -56,10 +84,10 @@ const PaymentSuccess = () => {
 
                             <div>
                                 <p className="text-sm text-[#606060]">
-                                    Parcel Name
+                                   Tracking Id
                                 </p>
                                 <h3 className="mt-1 font-bold text-[#03373D]">
-                                    Your Parcel
+                                    {paymentInfo.trackingId}
                                 </h3>
                             </div>
                         </div>
@@ -75,7 +103,7 @@ const PaymentSuccess = () => {
                                     Payment Amount
                                 </p>
                                 <h3 className="mt-1 font-bold text-[#03373D]">
-                                    Payment Completed
+                                    {paymentInfo.amount}
                                 </h3>
                             </div>
                         </div>
@@ -91,7 +119,7 @@ const PaymentSuccess = () => {
                                     Transaction ID
                                 </p>
                                 <h3 className="mt-1 break-all font-bold text-[#03373D]">
-                                    Payment Confirmation
+                                    {paymentInfo.transactionId}
                                 </h3>
                             </div>
                         </div>
@@ -107,7 +135,7 @@ const PaymentSuccess = () => {
                                     Payment Date
                                 </p>
                                 <h3 className="mt-1 font-bold text-[#03373D]">
-                                    {paymentDate}
+                                    {localDateTime}
                                 </h3>
                             </div>
                         </div>

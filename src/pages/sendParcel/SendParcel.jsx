@@ -1,5 +1,5 @@
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -11,6 +11,7 @@ const SendParcel = () => {
         // formState: {errors}
     } = useForm();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const serviceCenters = useLoaderData();
     const regionsDuplicate = serviceCenters.map(c => c.region);
@@ -26,7 +27,6 @@ const SendParcel = () => {
 
 
     const handleSendParcel = (data) => {
-        console.log(data);
         const isDocument = data.parcelType === 'document';
         const isSameDistrict = data.senderDistrict === data.receiverDistrict;
         const parcelWeight = parseFloat(data.weight);
@@ -60,14 +60,17 @@ const SendParcel = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.post("/parcels", data)
-                    .then(() => {
-                        // console.log("after getting parcel", res.data);
-
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Your parcel has been taken.",
-                            icon: "success"
-                        });
+                    .then((res) => {
+                        if (res.data.insertedId){
+                            navigate('/dashboard/my_parcel')
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Parcel has created. Please pay",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
                     })
                     .catch(error => {
                         console.error("Error adding parcel:", error);

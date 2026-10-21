@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { FaCreditCard, FaEye, FaTrash } from "react-icons/fa6";
+import { FaCheck, FaCreditCard, FaEye, FaTrash } from "react-icons/fa6";
 import Swal from "sweetalert2";
-import { Link } from "react-router";
 import Loading from "../../../components/Loading/Loading";
 
 
@@ -138,13 +137,18 @@ const MyParcel = () => {
                                     </td>
 
                                     <td className="whitespace-nowrap text-gray-600">
-                                        ৳ {parcel.cost}
+                                        $ {parcel.cost}
                                     </td>
 
                                     <td className="whitespace-nowrap">
                                         {
-                                            parcel.paymentStatus === "Paid"
-                                                ? <span className="text-green-500">Paid</span>
+                                            parcel.paymentStatus === "paid"
+                                                ? <span className="btn btn-sm rounded-full border border-[#CAEB66] bg-[#CAEB66]/20  font-bold text-[#03373D] shadow-sm ">
+                                                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#03373D] text-[#CAEB66]">
+                                                        <FaCheck className="" />
+                                                    </span>
+                                                    Paid
+                                                </span>
                                                 : <button onClick={() => handlePayment(parcel)} className="btn btn-sm min-h-8 border-none bg-[#C9F158] px-3 text-xs text-gray-800 hover:bg-[#b9e344] sm:px-4 sm:text-sm">
                                                     <FaCreditCard />
                                                     Pay
