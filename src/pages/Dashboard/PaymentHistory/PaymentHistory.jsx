@@ -26,7 +26,7 @@ const PaymentHistory = () => {
     return (
         <div className="w-full min-w-0">
             <h2 className="mb-4 text-3xl font-bold text-primary sm:text-4xl">
-                Payment History {payments.length}
+                Payment History: {payments.length}
             </h2>
 
             <div className="w-full min-w-0 overflow-hidden rounded-xl border border-base-200 bg-white">

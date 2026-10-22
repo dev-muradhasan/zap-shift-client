@@ -26,7 +26,6 @@ const MyParcel = () => {
             return res.data
         }
     })
-
     if(isLoading){
         return <Loading></Loading>
     }
@@ -74,7 +73,7 @@ const MyParcel = () => {
     return (
         <div className="w-full min-w-0">
             <h2 className="mb-4 text-3xl font-bold text-primary sm:text-4xl">
-                All of my parcels {parcels.length}
+                All of my parcels: {parcels.length}
             </h2>
 
             <div className="w-full min-w-0 overflow-hidden rounded-xl border border-base-200 bg-white">
@@ -131,10 +130,11 @@ const MyParcel = () => {
 
                                     <td className="whitespace-nowrap">
                                         <span
-                                            className={`font-medium ${statusColors[parcel.status]
+                                            className={`text-green-500 font-medium ${statusColors[parcel.status]
                                                 }`}
                                         >
-                                            {parcel.status}
+                                            {/* {parcel.status} */}
+                                            Shifted
                                         </span>
                                     </td>
 
@@ -178,6 +178,16 @@ const MyParcel = () => {
                                     </td>
                                 </tr>
                             ))}
+                            {parcels.length === 0 && (
+                                <tr>
+                                    <td
+                                        colSpan={5}
+                                        className="py-10 text-center text-gray-500"
+                                    >
+                                        No parcels found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
