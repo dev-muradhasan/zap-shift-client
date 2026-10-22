@@ -2,6 +2,8 @@ import { useForm, useWatch } from "react-hook-form";
 import { FaArrowRight, FaMotorcycle } from "react-icons/fa";
 import riderImage from "../../assets/agent-pending.png";
 import { useLoaderData } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const Rider = () => {
     const { register, handleSubmit, control } = useForm();
@@ -9,16 +11,29 @@ const Rider = () => {
     const regionsDuplicate = serviceCenters.map(c => c.region);
     const regions = [...new Set(regionsDuplicate)];
     const region = useWatch({ control, name: 'region' })
-  
+    const axiosSecure = useAxiosSecure()
+
     const districtByRegion = (region) => {
         const regionDistricts = serviceCenters.filter(r => r.region === region);
         const districts = regionDistricts.map(d => d.district);
         return districts;
     }
-    
+
 
     const handleRiderSubmit = (data) => {
         console.log(data);
+        axiosSecure.post('/riders', data)
+            .then(res => {
+                if (res.data.insertedId) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your application has been submitted. We will reach to you in 3 days.",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
     };
 
     const inputClass =

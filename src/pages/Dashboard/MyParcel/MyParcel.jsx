@@ -72,7 +72,7 @@ const MyParcel = () => {
 
     return (
         <div className="w-full min-w-0">
-            <h2 className="mb-4 text-3xl font-bold text-primary sm:text-4xl">
+            <h2 className="mb-6 text-3xl font-bold text-primary sm:text-4xl">
                 All of my parcels: {parcels.length}
             </h2>
 

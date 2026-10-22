@@ -18,6 +18,7 @@ import {
     FaTimes,
     FaUserCircle,
     FaBox,
+    FaMotorcycle,
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
@@ -57,6 +58,11 @@ const DashboardLayout = () => {
             path: "/dashboard/payment-history",
             icon: <FaTruck />,
             expandable: true,
+        },
+        {
+            title: "Approve Rider",
+            path: "/dashboard/approve-rider",
+            icon: <FaMotorcycle />,
         },
         {
             title: "Invoices",
