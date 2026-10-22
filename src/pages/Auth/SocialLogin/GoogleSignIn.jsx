@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
+import axios from "axios";
 
 
 const GoogleSignIn = () => {
@@ -8,16 +9,50 @@ const GoogleSignIn = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleGoogleLogin = () => {
-        googleSignIn()
-            .then(result => {
-                console.log(result.user);
-                navigate(location?.state || '/')
-            })
-            .catch(error => {
-                console.log(error.message);
-            })
-    }
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await googleSignIn();
+            const user = result.user;
+
+            // Get Firebase ID token
+            const token = await user.getIdToken();
+
+
+            // Check if user exists in MongoDB
+            const res = await axios.get(
+                "http://localhost:3000/users",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            // Insert only if user does not exist
+            if (!res.data.exists) {
+                const userInfo = {
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                };
+
+                await axios.post(
+                    'http://localhost:3000/users',
+                    userInfo,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+            }
+
+            navigate(location?.state || '/');
+
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
 
     return (
         <div>

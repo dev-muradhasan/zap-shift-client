@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useLocation, useNavigate,  } from "react-router";
+import { Link, useLocation, useNavigate, } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 
@@ -9,6 +9,7 @@ import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 
 
 const SignIn = () => {
+  const [loading, setLoading] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { signInUser } = useAuth();
@@ -16,18 +17,18 @@ const SignIn = () => {
   const navigate = useNavigate();
 
 
-  const handleLogin = (data) => {
-    console.log(data);
-    signInUser(data.email, data.password)
-      .then(result => {
-        console.log(result.user);
-        navigate(location?.state || '/')
-      })
-      .catch(error => {
-        console.log(error.message);
-      })
-  }
-
+  const handleLogin = async (data) => {
+    setLoading(true);
+    try {
+      const result = await signInUser(data.email, data.password);
+      console.log(result.user);
+      navigate(location?.state || '/');
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="w-full max-w-xs mx-auto">
 
@@ -107,21 +108,37 @@ const SignIn = () => {
         {/* Login Button */}
         <button
           type="submit"
+          disabled={loading}
           className="
-                btn
-                w-full
-                h-10
-                min-h-10
-                mt-2
-                bg-accent-content
-                hover:bg-[#b8e936]
-                border-none
-                text-primary
-                font-bold
-                text-sm
-            "
+        btn
+        w-full
+        h-12
+        min-h-12
+        mt-3
+        rounded-sm
+        border-none
+        bg-accent-content
+        text-primary
+        text-base
+        font-bold
+        shadow-md
+        transition-all
+        duration-300
+        hover:bg-[#b8e936]
+        hover:shadow-lg
+        active:scale-[0.98]
+        disabled:cursor-not-allowed
+        disabled:opacity-70
+    "
         >
-          Login
+          {loading ? (
+            <>
+              <span className="loading loading-spinner loading-sm"></span>
+              Logging In...
+            </>
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
 

@@ -61,7 +61,7 @@ const Coverage = () => {
     };
 
     return (
-        <section className="bg-[#eef0f1] py-5">
+        <section className="bg-[#eef0f1]">
             <div className="mx-auto">
                 {/* Main White Card */}
                 <div className="bg-white rounded-2xl p-6 md:p-8 lg:p-10">

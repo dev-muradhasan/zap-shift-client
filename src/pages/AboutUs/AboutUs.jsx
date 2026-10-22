@@ -108,7 +108,7 @@ const AboutUs = () => {
     };
 
     return (
-        <section className="bg-[#eef0f1] py-5 md:py-8">
+        <section className="bg-[#eef0f1] ">
             <div className="max-w-7xl mx-auto">
                 {/* Main Card */}
                 <div

@@ -4,9 +4,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
+import axios from "axios";
 
 
 const SignUp = () => {
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm()
     const { registerUser, updateUserProfile } = useAuth();
@@ -34,23 +36,65 @@ const SignUp = () => {
         return data.secure_url;
     }
 
+
     const handleRegister = async (data) => {
-        console.log(data);
-        const imageFile = data.photo[0];
-        const photoURL = await uploadImage(imageFile);
-        const profile = { displayName: data.name, photoURL }
-        registerUser(data.email, data.password)
-            .then(result => {
-                console.log(result.user)
-                updateUserProfile(profile)
-                    .then(() => console.log('user profile update done.'))
-                    navigate(location.state || '/')
-                    .catch(err => console.log(err.message))
-            })
-            .catch(error => {
-                console.log(error.message);
-            })
-    }
+        setLoading(true);
+        try {
+            const imageFile = data.photo[0];
+            const photoURL = await uploadImage(imageFile);
+
+            const profile = {
+                displayName: data.name,
+                photoURL: photoURL
+            };
+
+            // Firebase registration
+            const result = await registerUser(
+                data.email,
+                data.password
+            );
+
+            const firebaseUser = result.user;
+
+            // Get Firebase ID token
+            const token = await firebaseUser.getIdToken();
+
+            // Update Firebase profile
+            await updateUserProfile(profile);
+
+            // User information for MongoDB
+            const userInfo = {
+                email: data.email,
+                displayName: data.name,
+                photoURL: photoURL
+            };
+
+            // Save user in database
+            const res = await axios.post(
+                "http://localhost:3000/users",
+                userInfo,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (res.data.insertedId) {
+                console.log("User created in database");
+            }
+
+            navigate(location.state || "/");
+
+        } catch (error) {
+            console.error(
+                "Registration error:",
+                error.response?.data || error.message
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="w-full max-w-xs mx-auto">
@@ -156,21 +200,37 @@ const SignUp = () => {
                 {/* Register Button */}
                 <button
                     type="submit"
+                    disabled={loading}
                     className="
                         btn
                         w-full
-                        h-10
-                        min-h-10
-                        mt-2
-                        bg-accent-content
-                        hover:bg-[#b8e936]
+                        h-12
+                        min-h-12
+                        mt-3
+                        rounded-sm
                         border-none
+                        bg-accent-content
                         text-primary
+                        text-base
                         font-bold
-                        text-sm
-                    "
+                        shadow-md
+                        transition-all
+                        duration-300
+                        hover:bg-[#b8e936]
+                        hover:shadow-lg
+                        active:scale-[0.98]
+                        disabled:cursor-not-allowed
+                        disabled:opacity-70
+    "
                 >
-                    Register
+                    {loading ? (
+                        <>
+                            <span className="loading loading-spinner loading-sm"></span>
+                            Creating Account...
+                        </>
+                    ) : (
+                        "Register"
+                    )}
                 </button>
             </form>
 
