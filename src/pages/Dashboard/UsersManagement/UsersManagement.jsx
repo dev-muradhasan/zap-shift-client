@@ -5,16 +5,18 @@ import {
     FaUsers,
     FaSearch,
     FaEnvelope,
-    FaCalendarAlt,
     FaUserShield,
     FaUser,
+    FaTrash,
+    FaUserCog,
 } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import ErrorPage from "../../ErrorPage/ErrorPage";
+import Swal from "sweetalert2";
 
 
-const AllUsers = () => {
+const UsersManagement = () => {
     const axiosSecure = useAxiosSecure();
 
     const [search, setSearch] = useState("");
@@ -22,6 +24,7 @@ const AllUsers = () => {
 
     // Fetch users using TanStack Query
     const {
+        refetch,
         data: users = [],
         isLoading,
         isError,
@@ -32,6 +35,38 @@ const AllUsers = () => {
             return res.data;
         },
     });
+
+    const handleRoleChange = (user, role) => {
+        const updateRole = { role: role };
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You want to mark ${user.displayName} as ${role === 'admin' ?'an Admin':'a User'}.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result => {
+            if (result.isConfirmed) {
+                axiosSecure.patch(`/users/${user._id}`, updateRole)
+                    .then((res) => {
+                        if (res.data.modifiedCount) {
+                            refetch();
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: `${user.displayName} marked as ${role === 'admin' ? 'an Admin' : 'a User'}`,
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                    })
+            }
+        }))
+
+
+    }
+
 
     // Search and role filtering
     const filteredUsers = useMemo(() => {
@@ -53,24 +88,6 @@ const AllUsers = () => {
             return matchesSearch && matchesRole;
         });
     }, [users, search, selectedRole]);
-
-    // Format registration date
-    const formatDate = (date) => {
-        if (!date) return "N/A";
-
-        const parsedDate = new Date(date);
-
-        if (Number.isNaN(parsedDate.getTime())) {
-            return "N/A";
-        }
-
-        return parsedDate.toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            timeZone: "Asia/Dhaka",
-        });
-    };
 
     // Role badge styles
     const getRoleStyle = (role) => {
@@ -181,8 +198,8 @@ const AllUsers = () => {
                                 <th className="py-4 pl-6">#</th>
                                 <th>User Information</th>
                                 <th>Role</th>
-                                <th>Registration Date</th>
                                 <th className="pr-6">Account</th>
+                                <th className="pr-6">Actions</th>
                             </tr>
                         </thead>
 
@@ -253,14 +270,6 @@ const AllUsers = () => {
                                         </span>
                                     </td>
 
-                                    {/* Registration Date */}
-                                    <td>
-                                        <span className="flex items-center gap-2 text-sm text-gray-500">
-                                            <FaCalendarAlt className="shrink-0 text-gray-400" />
-
-                                            {formatDate(user.createdAt)}
-                                        </span>
-                                    </td>
 
                                     {/* Account */}
                                     <td className="pr-6">
@@ -268,6 +277,44 @@ const AllUsers = () => {
                                             <span className="h-2 w-2 rounded-full bg-green-500"></span>
                                             Registered
                                         </span>
+                                    </td>
+
+                                    {/* action */}
+                                    <td className="pr-6">
+                                        <div className="flex min-w-57.5 flex-wrap items-center gap-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRoleChange(user, user.role === 'admin' ? 'user' : 'admin')}
+                                                // disabled={isActionPending}
+                                                className={`btn btn-sm gap-1.5 border-0 ${user.role === "admin"
+                                                    ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                                                    : "bg-[#EAF5F4] text-[#03373D] hover:bg-[#D5EAE7]"
+                                                    }`}
+                                            >
+                                                {user.role === "admin" ? (
+                                                    <>
+                                                        <FaUser />
+                                                        Remove Admin
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FaUserCog />
+                                                        Make Admin
+                                                    </>
+                                                )}
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                // onClick={() => handleDelete(user)}
+                                                // disabled={isActionPending}
+                                                title="Delete user"
+                                                className="btn btn-sm gap-1.5 border-0 bg-red-100 text-red-600 hover:bg-red-200"
+                                            >
+                                                <FaTrash />
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -308,4 +355,10 @@ const AllUsers = () => {
     );
 };
 
-export default AllUsers;
+export default UsersManagement;
+
+
+
+
+
+
