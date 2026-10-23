@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaCheck, FaCreditCard, FaEye, FaTrash } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading/Loading";
+import { Link } from "react-router";
 
 
 const statusColors = {
@@ -160,10 +161,10 @@ const MyParcel = () => {
 
                                     <td>
                                         <div className="flex items-center gap-2">
-                                            <button className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm">
+                                            <Link to={`/dashboard/parcels/${parcel._id}`} className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm">
                                                 <FaEye />
                                                 View
-                                            </button>
+                                            </Link>
 
                                             <button
                                                 onClick={() =>

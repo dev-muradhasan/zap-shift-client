@@ -105,7 +105,7 @@ const PaymentHistory = () => {
                                     {/* Action */}
                                     <td>
                                         <Link
-                                            to={`/dashboard/payment-history/${payment._id}`}
+                                            to={`/dashboard/parcels/${payment.parcelId}`}
                                             className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm"
                                         >
                                             <FaEye />

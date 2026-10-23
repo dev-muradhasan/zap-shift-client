@@ -19,6 +19,7 @@ import {
     FaUserCircle,
     FaBox,
     FaMotorcycle,
+    FaUsers,
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
@@ -60,7 +61,12 @@ const DashboardLayout = () => {
             expandable: true,
         },
         {
-            title: "Approve Rider",
+            title: "Users Management",
+            path: "/dashboard/users-management",
+            icon: <FaUsers />,
+        },
+        {
+            title: "Rider Management",
             path: "/dashboard/approve-rider",
             icon: <FaMotorcycle />,
         },
@@ -207,7 +213,7 @@ const DashboardLayout = () => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-62.5 flex-col border-r border-gray-100 bg-white transition-transform duration-300 lg:w-52.5 ${sidebarOpen
+                className={`fixed inset-y-0 left-0 z-50 flex w-62.5 flex-col border-r border-gray-100 bg-white transition-transform duration-300 lg:w-60 ${sidebarOpen
                         ? "translate-x-0"
                         : "-translate-x-full lg:translate-x-0"
                     }`}
@@ -216,7 +222,7 @@ const DashboardLayout = () => {
             </aside>
 
             {/* Main Section */}
-            <div className="min-h-screen lg:ml-52.5">
+            <div className="min-h-screen lg:ml-60">
                 {/* Topbar */}
                 <header className="sticky top-0 z-30 flex h-15 items-center justify-between border-b border-gray-100 bg-white px-4 sm:px-6 lg:px-5">
                     <div className="flex items-center gap-4">
@@ -300,7 +306,7 @@ const DashboardLayout = () => {
                 </header>
 
                 {/* Page Content */}
-                <main className="p-3 sm:p-5 lg:p-5">
+                <main className="p-3 sm:p-4">
                     <div className="min-h-[calc(100vh-100px)] rounded-2xl bg-white p-4 sm:p-6 lg:p-8">
                         <Outlet />
                     </div>

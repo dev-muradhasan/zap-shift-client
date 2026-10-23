@@ -18,6 +18,9 @@ import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 import ApproveRider from "../pages/Dashboard/ApproveRider/ApproveRider";
+import ParcelDetails from "../pages/Dashboard/ParcelDetails/ParcelDetails";
+import RiderDetails from "../pages/Dashboard/RiderDetails/RiderDetails";
+import UsersManagement from "../pages/Dashboard/UsersManagement/UsersManagement";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +88,26 @@ export const router = createBrowserRouter([
                 loader: () => fetch('/serviceCenters.json').then(res => res.json()),
             },
             {
+                path: "parcels/:id",
+                element: (
+                    <PrivateRoute>
+                        <ParcelDetails />
+                    </PrivateRoute>
+                ),
+                loader: ({ params }) =>
+                    fetch(`http://localhost:3000/parcels/${params.id}`)
+            },
+            {
+                path: "riders/:id",
+                element: (
+                    <PrivateRoute>
+                        <RiderDetails />
+                    </PrivateRoute>
+                ),
+                loader: ({ params }) =>
+                    fetch(`http://localhost:3000/riders/${params.id}`)
+            },
+            {
                 path: "payment-success",
                 element: <PaymentSuccess />,
             },
@@ -99,6 +122,10 @@ export const router = createBrowserRouter([
             {
                 path: 'approve-rider',
                 element: <ApproveRider></ApproveRider>
+            },
+            {
+                path: 'users-management',
+                element: <UsersManagement></UsersManagement>
             },
             // {
             //     path: "invoices",
