@@ -2,15 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import { Link } from "react-router";
-import { FaCheck, FaEye, FaTimes, FaTrash } from "react-icons/fa";
+import { FaEye, FaTrash, FaUserMinus, FaUserPlus } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 
 const ApproveRider = () => {
     const axiosSecure = useAxiosSecure();
 
-    const {isLoading, data: riders = []} = useQuery({
+    const { refetch, isLoading, data: riders = [] } = useQuery({
         queryKey: ['riders', 'pending'],
-        queryFn: async()=>{
+        queryFn: async () => {
             const res = await axiosSecure.get('/riders');
             return res.data
         }
@@ -20,6 +21,58 @@ const ApproveRider = () => {
         return <Loading></Loading>
     }
 
+    const riderStatusUpdate = (rider, status) => {
+        const updateInfo = { status: status, email: rider.email }
+        axiosSecure.patch(`/riders/${rider._id}`, updateInfo)
+            .then((res) => {
+                if (res.data.modifiedCount) {
+                    refetch();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `Rider has been ${status}.`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
+    }
+
+    const handleApproval = rider => {
+        riderStatusUpdate(rider, 'approved')
+    }
+    const handleReject = rider => {
+        riderStatusUpdate(rider, 'rejected')
+    }
+
+    const handleDelete = id => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: 'You want to delete it',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/riders/${id}`)
+                    .then((res) => {
+                        if (res.data.deletedCount) {
+                            refetch()
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Rider has been deleted.",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                    })
+            }
+
+        })
+    }
     return (
         <div className="w-full min-w-0">
             {/* Heading */}
@@ -91,10 +144,10 @@ const ApproveRider = () => {
                                     <td>
                                         <span
                                             className={`badge border-none px-3 py-3 font-semibold capitalize ${rider.status === "approved"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : rider.status === "rejected"
-                                                        ? "bg-red-100 text-red-600"
-                                                        : "bg-yellow-100 text-yellow-700"
+                                                ? "bg-green-100 text-green-700"
+                                                : rider.status === "rejected"
+                                                    ? "bg-red-100 text-red-600"
+                                                    : "bg-yellow-100 text-yellow-700"
                                                 }`}
                                         >
                                             {rider.status}
@@ -112,33 +165,71 @@ const ApproveRider = () => {
                                                 View
                                             </Link>
 
-                                            {rider.status === "pending" && (
+                                            {rider.status === "pending" ?
                                                 <>
                                                     <button
+                                                        onClick={() => handleApproval(rider)}
                                                         type="button"
                                                         title="Approve rider"
                                                         className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-green-100 text-green-700 hover:bg-green-200"
                                                     >
-                                                        <FaCheck />
+                                                        <FaUserPlus />
                                                     </button>
 
                                                     <button
+                                                        onClick={() => handleReject(rider)}
                                                         type="button"
                                                         title="Reject rider"
                                                         className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-red-100 text-red-600 hover:bg-red-200"
                                                     >
-                                                        <FaTimes />
+                                                        <FaUserMinus />
                                                     </button>
 
                                                     <button
+                                                        onClick={() => handleDelete(rider._id)}
                                                         type="button"
-                                                        title="Reject rider"
+                                                        title="Delete rider"
                                                         className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-red-100 text-red-600 hover:bg-red-200"
                                                     >
-                                                        <FaTrash/>
+                                                        <FaTrash />
                                                     </button>
-                                                </>
-                                            )}
+                                                </> : rider.status === "approved" ?
+                                                    <>
+                                                        <button
+                                                            onClick={() => handleReject(rider)}
+                                                            type="button"
+                                                            title="Reject rider"
+                                                            className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-red-100 text-red-600 hover:bg-red-200"
+                                                        >
+                                                            <FaUserMinus />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(rider._id)}
+                                                            type="button"
+                                                            title="Delete rider"
+                                                            className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-red-100 text-red-600 hover:bg-red-200"
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </> : <>
+                                                        <button
+                                                            onClick={() => handleApproval(rider)}
+                                                            type="button"
+                                                            title="Approve rider"
+                                                            className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-green-100 text-green-700 hover:bg-green-200"
+                                                        >
+                                                            <FaUserPlus />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(rider._id)}
+                                                            type="button"
+                                                            title="Delete rider"
+                                                            className="btn btn-square btn-sm min-h-8 h-8 w-8 border-none bg-red-100 text-red-600 hover:bg-red-200"
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </>
+                                            }
                                         </div>
                                     </td>
                                 </tr>

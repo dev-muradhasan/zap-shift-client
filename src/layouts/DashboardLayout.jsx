@@ -230,10 +230,6 @@ const DashboardLayout = () => {
 
                         <div className="hidden items-center gap-2 text-xs text-gray-400 sm:flex">
                             <span>Dashboard</span>
-                            <FaChevronRight className="text-[9px]" />
-                            <span className="font-medium text-gray-700">
-                                Overview
-                            </span>
                         </div>
                     </div>
 
@@ -262,10 +258,10 @@ const DashboardLayout = () => {
                                 )}
 
                                 <div className="hidden text-left sm:block">
-                                    <p className="max-w-32 truncate text-xs font-semibold text-gray-800">
+                                    <p className="max-w-32 truncate font-semibold text-gray-800">
                                         {user?.displayName || "User"}
                                     </p>
-                                    <p className="text-[10px] text-gray-500">
+                                    <p className="text-[12px] text-gray-500">
                                         User
                                     </p>
                                 </div>
