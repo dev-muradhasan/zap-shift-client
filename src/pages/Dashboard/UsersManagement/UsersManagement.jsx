@@ -48,7 +48,7 @@ const UsersManagement = () => {
             confirmButtonText: "Yes"
         }).then((result => {
             if (result.isConfirmed) {
-                axiosSecure.patch(`/users/${user._id}`, updateRole)
+                axiosSecure.patch(`/users/${user._id}/role`, updateRole)
                     .then((res) => {
                         if (res.data.modifiedCount) {
                             refetch();

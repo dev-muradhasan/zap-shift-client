@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 const SignUp = () => {
@@ -36,61 +37,64 @@ const SignUp = () => {
         return data.secure_url;
     }
 
-
     const handleRegister = async (data) => {
         setLoading(true);
         try {
             const imageFile = data.photo[0];
             const photoURL = await uploadImage(imageFile);
-
             const profile = {
                 displayName: data.name,
-                photoURL: photoURL
+                photoURL: photoURL,
             };
-
             // Firebase registration
             const result = await registerUser(
                 data.email,
                 data.password
             );
-
             const firebaseUser = result.user;
-
             // Get Firebase ID token
             const token = await firebaseUser.getIdToken();
-
             // Update Firebase profile
             await updateUserProfile(profile);
-
             // User information for MongoDB
             const userInfo = {
                 email: data.email,
                 displayName: data.name,
-                photoURL: photoURL
+                photoURL: photoURL,
             };
-
             // Save user in database
             const res = await axios.post(
                 "http://localhost:3000/users",
                 userInfo,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
             );
-
             if (res.data.insertedId) {
-                console.log("User created in database");
+                toast.success("Registration successful! Welcome aboard.");
+                navigate(location?.state || "/");
+            } else {
+                toast.error("Registration completed, but saving user data failed.");
             }
-
-            navigate(location.state || "/");
-
         } catch (error) {
             console.error(
                 "Registration error:",
                 error.response?.data || error.message
             );
+            // Firebase and server error messages
+            if (error.code === "auth/email-already-in-use") {
+                toast.error("This email is already registered!");
+            } else if (error.code === "auth/weak-password") {
+                toast.error("Password is too weak. Please try a stronger password.");
+            } else if (error.code === "auth/invalid-email") {
+                toast.error("Please enter a valid email address.");
+            } else if (error.response?.status === 409) {
+                toast.error("An account with this email already exists!");
+            } else {
+                toast.error("Registration failed. Please try again.");
+            }
         } finally {
             setLoading(false);
         }

@@ -6,7 +6,6 @@ import {
     FaChevronDown,
     FaChevronRight,
     FaTachometerAlt,
-    FaTruck,
     FaFileInvoice,
     FaStore,
     FaTags,
@@ -20,12 +19,15 @@ import {
     FaBox,
     FaMotorcycle,
     FaUsers,
+    FaCreditCard,
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
 import { FaBoxOpen } from "react-icons/fa6";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
+    const {role} = useRole()
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
 
@@ -55,10 +57,9 @@ const DashboardLayout = () => {
         },
                 
         {
-            title: "All Deliveries",
+            title: "Payment History",
             path: "/dashboard/payment-history",
-            icon: <FaTruck />,
-            expandable: true,
+            icon: <FaCreditCard />,
         },
         {
             title: "Users Management",
@@ -110,6 +111,17 @@ const DashboardLayout = () => {
         },
     ];
 
+    const filteredMenuItems = menuItems.filter((item) => {
+        const adminRoutes = [
+            "Rider Management",
+            "Users Management",
+        ];
+        if (adminRoutes.includes(item.title)) {
+            return role === "admin";
+        }
+        return true;
+    });
+
     const sidebarContent = (
         <>
             {/* Logo */}
@@ -133,7 +145,7 @@ const DashboardLayout = () => {
                 </p>
 
                 <div className="space-y-1">
-                    {menuItems.map((item) => (
+                    {filteredMenuItems.map((item) => (
                         <NavLink
                             key={item.title}
                             to={item.path}
@@ -268,7 +280,7 @@ const DashboardLayout = () => {
                                         {user?.displayName || "User"}
                                     </p>
                                     <p className="text-[12px] text-gray-500">
-                                        User
+                                       {role}
                                     </p>
                                 </div>
 

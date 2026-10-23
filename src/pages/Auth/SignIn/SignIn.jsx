@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useLocation, useNavigate, } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
+import { toast } from "react-toastify";
 
 
 
@@ -22,13 +23,20 @@ const SignIn = () => {
     try {
       const result = await signInUser(data.email, data.password);
       console.log(result.user);
-      navigate(location?.state || '/');
+      toast.success("Login successful! Welcome back.");
+      navigate(location?.state || "/");
     } catch (error) {
       console.log(error.message);
+      toast.error(
+        error.code === "auth/invalid-credential"
+          ? "Invalid email or password!"
+          : error.message
+      );
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="w-full max-w-xs mx-auto">
 

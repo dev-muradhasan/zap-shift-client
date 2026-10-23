@@ -21,6 +21,7 @@ import ApproveRider from "../pages/Dashboard/ApproveRider/ApproveRider";
 import ParcelDetails from "../pages/Dashboard/ParcelDetails/ParcelDetails";
 import RiderDetails from "../pages/Dashboard/RiderDetails/RiderDetails";
 import UsersManagement from "../pages/Dashboard/UsersManagement/UsersManagement";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
     {
@@ -121,11 +122,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'approve-rider',
-                element: <ApproveRider></ApproveRider>
+                element: <AdminRoute><ApproveRider></ApproveRider></AdminRoute>
             },
             {
                 path: 'users-management',
-                element: <UsersManagement></UsersManagement>
+                element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
             },
             // {
             //     path: "invoices",

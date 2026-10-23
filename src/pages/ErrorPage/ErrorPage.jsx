@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import errorImg from "../../assets/18499954_bubble_gum200_89 1.png"
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const ErrorPage = () => {
     return (
@@ -11,7 +12,7 @@ const ErrorPage = () => {
                 <img
                     src={errorImg}
                     alt="404 Error"
-                    className="w-44 md:w-54 lg:w-65"
+                    className="w-30 md:w-40 lg:w-50"
                 />
 
                 {/* Error Text */}
@@ -20,24 +21,37 @@ const ErrorPage = () => {
                 </h1> */}
 
                 {/* Go Home Button */}
-                <Link
-                    to="/"
-                    className="
-                        mt-3
-                        bg-[#c5f23f]
-                        hover:bg-[#b8e936]
-                        text-[#1f2d16]
+                <div className="flex justify-center items-center gap-2 mt-3">
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 rounded-md bg-[#C5F23F] px-5 py-2.5 text-sm font-semibold text-[#1f2d16] transition duration-200 hover:bg-[#B8E936]"
+                    >
+                        <FaArrowLeft />
+                        Go Home
+                    </Link>
+
+                    <Link
+                        to="/dashboard"
+                        className="
+                        bg-primary
+                        hover:bg-[#1f2d16]
                         font-semibold
+                        text-white
                         text-sm
+                        inline-flex 
+                        items-center
+                        gap-2
                         px-5
                         py-2.5
                         rounded-md
                         transition
                         duration-200
                     "
-                >
-                    Go Home
-                </Link>
+                    >
+                        Go to dashboard
+                        <FaArrowRight />
+                    </Link>
+                </div>
 
             </div>
 

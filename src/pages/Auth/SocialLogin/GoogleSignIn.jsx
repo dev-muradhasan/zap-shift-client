@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 const GoogleSignIn = () => {
-
     const { googleSignIn } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
@@ -13,21 +13,17 @@ const GoogleSignIn = () => {
         try {
             const result = await googleSignIn();
             const user = result.user;
-
             // Get Firebase ID token
             const token = await user.getIdToken();
-
-
             // Check if user exists in MongoDB
             const res = await axios.get(
-                "http://localhost:3000/users",
+                "http://localhost:3000/users/check",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
             );
-
             // Insert only if user does not exist
             if (!res.data.exists) {
                 const userInfo = {
@@ -35,9 +31,8 @@ const GoogleSignIn = () => {
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                 };
-
                 await axios.post(
-                    'http://localhost:3000/users',
+                    "http://localhost:3000/users",
                     userInfo,
                     {
                         headers: {
@@ -46,11 +41,20 @@ const GoogleSignIn = () => {
                     }
                 );
             }
-
-            navigate(location?.state || '/');
-
+            toast.success("Google login successful! Welcome back.");
+            navigate(location?.state || "/");
         } catch (error) {
             console.log(error.response?.data || error.message);
+            console.error("Google login error:", error.code, error.message);
+            if (error.code === "auth/popup-closed-by-user") {
+                toast.error("Google sign-in was cancelled.");
+            } else if (error.code === "auth/popup-blocked") {
+                toast.error("Google sign-in popup was blocked.");
+            } else if (error.response?.status === 401) {
+                toast.error("Authentication failed. Please try again.");
+            } else {
+                toast.error("Google login failed. Please try again.");
+            }
         }
     };
 
