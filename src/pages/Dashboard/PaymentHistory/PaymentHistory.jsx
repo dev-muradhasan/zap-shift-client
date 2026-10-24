@@ -47,7 +47,7 @@ const PaymentHistory = () => {
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
-                                    Payment Info
+                                    Transaction Id
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
@@ -91,14 +91,12 @@ const PaymentHistory = () => {
                                         {payment.trackingId || "N/A"}
                                     </td>
 
-                                    {/* Payment Info */}
+                                    {/* transaction id */}
                                     <td className="whitespace-nowrap">
                                         <div className="flex items-center gap-1 text-primary font-medium">
                                             <span>
-                                                $ {payment.amount}
+                                                {payment.transactionId}
                                             </span>
-
-                                            <span className="text-green-500">({payment.paymentStatus})</span>
                                         </div>
                                     </td>
 

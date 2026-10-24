@@ -20,6 +20,7 @@ import {
     FaMotorcycle,
     FaUsers,
     FaCreditCard,
+    FaUserCheck,
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
@@ -70,6 +71,11 @@ const DashboardLayout = () => {
             title: "Rider Management",
             path: "/dashboard/approve-rider",
             icon: <FaMotorcycle />,
+        },
+        {
+            title: 'Assign Rider',
+            path: "/dashboard/assign-rider",
+            icon: <FaUserCheck />,
         },
         {
             title: "Invoices",

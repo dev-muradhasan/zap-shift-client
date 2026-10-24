@@ -8,8 +8,8 @@ import { Link } from "react-router";
 
 
 const statusColors = {
-    "Paid Return": "text-green-600",
-    Delivered: "text-green-600",
+    'pending-pickup' : "text-amber-600",
+    'rider-assigned': "text-blue-600",
     Pending: "text-green-600",
     Cancelled: "text-green-600",
     Refunded: "text-green-600",
@@ -130,13 +130,13 @@ const MyParcel = () => {
                                     </td>
 
                                     <td className="whitespace-nowrap">
-                                        <span
-                                            className={`text-green-500 font-medium ${statusColors[parcel.status]
+                                        {parcel.deliveryStatus && <span
+                                            className={`px-3 py-1.5 text-sm font-medium rounded-sm ${statusColors[parcel.deliveryStatus]
                                                 }`}
                                         >
-                                            {/* {parcel.status} */}
-                                            Shifted
-                                        </span>
+                                            {parcel.deliveryStatus}
+                                        </span>}
+                                       
                                     </td>
 
                                     <td className="whitespace-nowrap text-gray-600">

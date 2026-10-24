@@ -92,11 +92,7 @@ const ApproveRider = () => {
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
-                                    Rider Name
-                                </th>
-
-                                <th className="whitespace-nowrap font-bold">
-                                    Email
+                                    Rider Name/Email
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
@@ -104,7 +100,11 @@ const ApproveRider = () => {
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
-                                    Status
+                                    Application Status
+                                </th>
+
+                                <th className="whitespace-nowrap font-bold">
+                                    Work Status
                                 </th>
 
                                 <th className="whitespace-nowrap font-bold">
@@ -125,14 +125,10 @@ const ApproveRider = () => {
                                         {index + 1}
                                     </td>
 
-                                    {/* Rider Name */}
-                                    <td className="whitespace-nowrap font-semibold text-primary">
-                                        {rider.name}
-                                    </td>
-
-                                    {/* Email */}
-                                    <td className="whitespace-nowrap text-gray-600">
-                                        {rider.email}
+                                    {/* Rider Name/email */}
+                                    <td className="flex flex-col ">
+                                        <span className="font-semibold text-primary">{rider.name}</span>
+                                        <span className="text-gray-600">{rider.email}</span>
                                     </td>
 
                                     {/* District */}
@@ -152,6 +148,11 @@ const ApproveRider = () => {
                                         >
                                             {rider.status}
                                         </span>
+                                    </td>
+
+                                    {/* work status */}
+                                    <td className="whitespace-nowrap text-gray-600">
+                                        {rider.workStatus}
                                     </td>
 
                                     {/* Action */}

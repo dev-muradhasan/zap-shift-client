@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import { auth } from "../Firebase/Firebase.init";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home/Home";
 import Coverage from "../pages/Coverage/Coverage";
@@ -22,6 +23,8 @@ import ParcelDetails from "../pages/Dashboard/ParcelDetails/ParcelDetails";
 import RiderDetails from "../pages/Dashboard/RiderDetails/RiderDetails";
 import UsersManagement from "../pages/Dashboard/UsersManagement/UsersManagement";
 import AdminRoute from "./AdminRoute";
+import AssignRider from "../pages/Dashboard/AssignRider/AssignRider";
+import axios from "axios";
 
 export const router = createBrowserRouter([
     {
@@ -105,8 +108,24 @@ export const router = createBrowserRouter([
                         <RiderDetails />
                     </PrivateRoute>
                 ),
-                loader: ({ params }) =>
-                    fetch(`http://localhost:3000/riders/${params.id}`)
+                // loader: ({ params }) =>
+                //     fetch(`http://localhost:3000/riders/${params.id}`)
+                loader: async ({ params }) => {
+                    const user = auth.currentUser;
+                    if (!user) {
+                        throw new Error("User is not logged in");
+                    }
+                    const token = await user.getIdToken();
+                    const res = await axios.get(
+                        `http://localhost:3000/riders/${params.id}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    return res.data;
+                },
             },
             {
                 path: "payment-success",
@@ -127,6 +146,10 @@ export const router = createBrowserRouter([
             {
                 path: 'users-management',
                 element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>
+            },
+            {
+                path: 'assign-rider',
+                element: <AdminRoute><AssignRider></AssignRider></AdminRoute>
             },
             // {
             //     path: "invoices",
