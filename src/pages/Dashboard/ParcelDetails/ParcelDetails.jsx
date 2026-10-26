@@ -44,6 +44,7 @@ const ParcelDetails = () => {
         });
     };
 
+
     return (
         <div className="min-h-screen rounded-xl bg-white">
             <div className="mb-8 flex flex-wrap items-center justify-between gap-3">

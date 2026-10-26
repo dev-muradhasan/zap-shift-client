@@ -25,6 +25,8 @@ import UsersManagement from "../pages/Dashboard/UsersManagement/UsersManagement"
 import AdminRoute from "./AdminRoute";
 import AssignRider from "../pages/Dashboard/AssignRider/AssignRider";
 import axios from "axios";
+import AssignedDeliveries from "../pages/Dashboard/AssignedDeliveries/AssignedDeliveries";
+import RiderRoute from "./RiderRoute";
 
 export const router = createBrowserRouter([
     {
@@ -150,6 +152,10 @@ export const router = createBrowserRouter([
             {
                 path: 'assign-rider',
                 element: <AdminRoute><AssignRider></AssignRider></AdminRoute>
+            },
+            {
+                path: 'assigned-deliveries',
+                element: <RiderRoute><AssignedDeliveries></AssignedDeliveries></RiderRoute>
             },
             // {
             //     path: "invoices",

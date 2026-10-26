@@ -1,12 +1,12 @@
 import Logo from "../../../components/Logo/Logo";
-
-
 import { Link, NavLink } from "react-router";
 import { FaArrowRight, FaArrowRightFromBracket, FaChevronDown } from "react-icons/fa6";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { FaUserCircle } from "react-icons/fa";
+
+
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
@@ -19,7 +19,6 @@ const Navbar = () => {
                 console.log(error);
             })
     }
-
     const navLinks = [
         { name: "Services", path: "/services" },
         { name: "Coverage", path: "/coverage" },
@@ -62,19 +61,21 @@ const Navbar = () => {
                                 <div
                                     tabIndex={0}
                                     role="button"
-                                    className="flex items-center gap-3 px-3 transition bg-gray-50 rounded-2xl" 
+                                    className="flex items-center gap-3 px-3 transition bg-gray-50 rounded-2xl"
                                 >
-                                    {user.photoURL ? (
-                                        <img
-                                            src={user.photoURL}
-                                            alt={"User"}
-                                            className="h-10 w-10 rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                                            <FaUserCircle className="text-3xl text-gray-500" />
-                                        </div>
-                                    )}
+                                    {
+                                        user.photoURL ? (
+                                            <img
+                                                src={user.photoURL}
+                                                alt={""}
+                                                className="h-10 w-10 rounded-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                                                <FaUserCircle className="text-3xl text-gray-500" />
+                                            </div>
+                                        )
+                                    }
 
                                     <div className="max-w-32 text-left">
                                         <p className="truncate text-sm font-semibold text-gray-800">
@@ -85,6 +86,8 @@ const Navbar = () => {
 
                                     <FaChevronDown className="text-xs text-gray-500" />
                                 </div>
+
+
 
                                 <ul
                                     tabIndex={0}
@@ -177,7 +180,7 @@ const Navbar = () => {
                                         {user.photoURL ? (
                                             <img
                                                 src={user.photoURL}
-                                                alt={ "User"}
+                                                alt={"User"}
                                                 className="h-10 w-10 rounded-full object-cover"
                                             />
                                         ) : (

@@ -32,30 +32,52 @@ const AssignRider = () => {
         riderModalRef.current.showModal()
     }
 
-    const handleAssignRider = (rider) => {
+    const handleAssignRider = async (rider) => {
         const riderAssignInfo = {
             riderId: rider._id,
             riderName: rider.name,
             riderEmail: rider.email,
+        };
+        try {
+            const res = await axiosSecure.patch(
+                `/parcels/${selectedParcel._id}`,
+                riderAssignInfo
+            );
+            console.log("Assignment response:", res.data);
+            if (res.data.parcelResult?.matchedCount > 0) {
+                riderModalRef.current.close();
+                await parcelRefetch();
+                await queryClient.invalidateQueries({
+                    queryKey: ["riders"],
+                });
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Rider has been assigned.",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Parcel not updated",
+                    text: "Could not find the parcel in the database.",
+                });
+            }
+        } catch (error) {
+            console.error(
+                "Assign rider error:",
+                error.response?.data || error.message
+            );
+
+            Swal.fire({
+                icon: "error",
+                title: "Assignment failed",
+                text: error.response?.data?.message || "Something went wrong.",
+            });
         }
-        axiosSecure.patch(`/parcels/${selectedParcel?._id}`, riderAssignInfo)
-            .then(async (res) => {
-                if (res.data.modifiedCount) {
-                    riderModalRef.current.close();
-                    parcelRefetch();
-                    await queryClient.invalidateQueries({
-                        queryKey: ["riders"],
-                    });
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Rider has been assigned.",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            })
-    }
+    };
+
 
     return (
         <div className="w-full min-w-0">

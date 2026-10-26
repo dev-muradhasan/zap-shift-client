@@ -21,6 +21,7 @@ import {
     FaUsers,
     FaCreditCard,
     FaUserCheck,
+    FaTasks,
 } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useAuth from "../hooks/useAuth";
@@ -28,7 +29,7 @@ import { FaBoxOpen } from "react-icons/fa6";
 import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
-    const {role} = useRole()
+    const { role, roleLoading } = useRole()
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
 
@@ -76,6 +77,12 @@ const DashboardLayout = () => {
             title: 'Assign Rider',
             path: "/dashboard/assign-rider",
             icon: <FaUserCheck />,
+            role: 'rider'
+        },
+        {
+            title: 'Assigned Deliveries',
+            path: "/dashboard/assigned-deliveries",
+            icon: <FaTasks />,
         },
         {
             title: "Invoices",
@@ -121,9 +128,13 @@ const DashboardLayout = () => {
         const adminRoutes = [
             "Rider Management",
             "Users Management",
+            "Assign Rider"
         ];
         if (adminRoutes.includes(item.title)) {
             return role === "admin";
+        }
+        if (item.role === "rider") {
+            return role === "rider";
         }
         return true;
     });
@@ -151,7 +162,7 @@ const DashboardLayout = () => {
                 </p>
 
                 <div className="space-y-1">
-                    {filteredMenuItems.map((item) => (
+                    {!roleLoading && filteredMenuItems.map((item) => (
                         <NavLink
                             key={item.title}
                             to={item.path}
