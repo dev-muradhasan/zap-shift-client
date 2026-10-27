@@ -77,11 +77,15 @@ const DashboardLayout = () => {
             title: 'Assign Rider',
             path: "/dashboard/assign-rider",
             icon: <FaUserCheck />,
-            role: 'rider'
         },
         {
             title: 'Assigned Deliveries',
             path: "/dashboard/assigned-deliveries",
+            icon: <FaTasks />,
+        },
+        {
+            title: 'Completed Deliveries',
+            path: "/dashboard/completed-deliveries",
             icon: <FaTasks />,
         },
         {
@@ -128,12 +132,16 @@ const DashboardLayout = () => {
         const adminRoutes = [
             "Rider Management",
             "Users Management",
-            "Assign Rider"
+            "Assign Rider",
         ];
+        const riderRoutes = [
+            "Assigned Deliveries",
+            "Completed Deliveries",
+        ]
         if (adminRoutes.includes(item.title)) {
             return role === "admin";
         }
-        if (item.role === "rider") {
+        if (riderRoutes.includes(item.title)) {
             return role === "rider";
         }
         return true;

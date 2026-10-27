@@ -44,7 +44,7 @@ const AssignedDeliveries = () => {
     });
 
     const handleDelivery = (parcel, deliveryStatus, icon, title) => {
-        const statusInfo = { deliveryStatus };
+        const statusInfo = { deliveryStatus, workStatus:parcel.riderId };
         axiosSecure.patch(`parcels/${parcel._id}/status`, statusInfo)
             .then(res => {
                 console.log(res.data);
@@ -52,19 +52,13 @@ const AssignedDeliveries = () => {
                     refetch()
                     Swal.fire({
                         position: "top-end",
-                        icon: (icon),
-                        title: (title),
+                        icon: icon,
+                        title: title,
                         showConfirmButton: false,
                         timer: 2000,
                     });
                 }
             })
-    }
-    const handleAcceptDelivery = parcel =>{
-        handleDelivery(parcel, 'rider-arriving', 'success', 'Thank for accepting.' )
-    }
-    const handleRejectDelivery = parcel =>{
-        handleDelivery(parcel, 'pending-pickup', 'warning','You have rejected this delivery.' )
     }
 
     const formatDate = (date) => {
@@ -173,7 +167,7 @@ const AssignedDeliveries = () => {
                                 <div className="flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F7F7] px-3 py-2 text-xs font-bold text-[#03373D]">
                                         <FaShippingFast />
-                                        {parcel.deliveryStatus}
+                                        {parcel.deliveryStatus.split('-').join(' ')}
                                     </span>
                                     <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-2 text-xs font-bold text-green-700">
                                         <FaCheckCircle />
@@ -304,7 +298,7 @@ const AssignedDeliveries = () => {
                                 </div>
 
 
-                                {parcel.deliveryStatus === "rider-assigned" ? (
+                                {/* {parcel.deliveryStatus === "rider-assigned" ? (
                                     <div className="flex flex-col gap-3 sm:flex-row">
                                         <button
                                             onClick={() => handleAcceptDelivery(parcel)}
@@ -327,6 +321,60 @@ const AssignedDeliveries = () => {
                                         <FaCheckCircle />
                                         Accepted
                                     </div>
+                                ) : null} */}
+                                {parcel.deliveryStatus === "rider-assigned" ? (
+                                    <div className="flex flex-col gap-3 sm:flex-row">
+                                        <button
+                                            onClick={() => handleDelivery(parcel, 'rider-arriving', 'success', 'Thank for accepting.')}
+                                            className="btn flex-1 border-none bg-[#03373D] text-white hover:bg-[#02292D]"
+                                        >
+                                            <FaCheck />
+                                            Accept
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleDelivery(parcel, 'pending-pickup', 'warning', 'You have rejected this delivery.')}
+                                            className="btn flex-1 border border-red-200 bg-white text-red-600 hover:bg-red-50"
+                                        >
+                                            <FaTimes />
+                                            Reject
+                                        </button>
+                                    </div>
+                                ) : parcel.deliveryStatus === "rider-arriving" ? (
+                                    <button
+                                        onClick={() =>
+                                            handleDelivery(
+                                                parcel,
+                                                "parcel-picked-up",
+                                                "success",
+                                                "Parcel Picked Up!"
+                                            )
+                                        }
+                                        className="btn w-full border-none bg-[#03373D] text-white hover:bg-[#02292D]"
+                                    >
+                                        <FaBox />
+                                        Mark as Picked Up
+                                    </button>
+                                ) : parcel.deliveryStatus === "parcel-picked-up" ? (
+                                    <button
+                                        onClick={() =>
+                                            handleDelivery(
+                                                parcel,
+                                                "delivered",
+                                                "success",
+                                                "Parcel Delivered Successfully!"
+                                            )
+                                        }
+                                        className="btn w-full border-none bg-[#CAEB66] text-[#03373D] hover:bg-[#b8d957]"
+                                    >
+                                        <FaCheckCircle />
+                                        Mark as Delivered
+                                    </button>
+                                ) : parcel.deliveryStatus === "delivered" ? (
+                                    <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 px-4 py-3 font-semibold text-green-700">
+                                        <FaCheckCircle />
+                                        Delivered Successfully
+                                    </div>
                                 ) : null}
 
                                 {/* Footer */}
@@ -344,7 +392,7 @@ const AssignedDeliveries = () => {
                                             Status:
                                         </span>
                                         <span className="font-bold text-[#03373D]">
-                                            {parcel.deliveryStatus}
+                                            {parcel.deliveryStatus.split('-').join(' ')}
                                         </span>
                                     </div>
                                 </div>

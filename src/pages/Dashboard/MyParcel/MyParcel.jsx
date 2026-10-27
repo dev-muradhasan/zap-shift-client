@@ -10,9 +10,7 @@ import { Link } from "react-router";
 const statusColors = {
     'pending-pickup' : "text-amber-600",
     'rider-assigned': "text-blue-600",
-    Pending: "text-green-600",
-    Cancelled: "text-green-600",
-    Refunded: "text-green-600",
+    'rider-arriving': "text-purple-600",
 };
 
 
@@ -134,7 +132,7 @@ const MyParcel = () => {
                                             className={`px-3 py-1.5 text-sm font-medium rounded-sm ${statusColors[parcel.deliveryStatus]
                                                 }`}
                                         >
-                                            {parcel.deliveryStatus}
+                                            {parcel.deliveryStatus.split('-').join(' ')}
                                         </span>}
                                        
                                     </td>
