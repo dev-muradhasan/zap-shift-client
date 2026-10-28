@@ -37,13 +37,14 @@ const AssignRider = () => {
             riderId: rider._id,
             riderName: rider.name,
             riderEmail: rider.email,
+            deliveryStatus: "rider-assigned",
         };
         try {
             const res = await axiosSecure.patch(
                 `/parcels/${selectedParcel._id}`,
                 riderAssignInfo
             );
-            console.log("Assignment response:", res.data);
+            // console.log("Assignment response:", res.data);
             if (res.data.parcelResult?.matchedCount > 0) {
                 riderModalRef.current.close();
                 await parcelRefetch();

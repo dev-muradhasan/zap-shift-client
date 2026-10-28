@@ -8,9 +8,11 @@ import { Link } from "react-router";
 
 
 const statusColors = {
-    'pending-pickup' : "text-amber-600",
+    'pending-pickup' : "text-black",
     'rider-assigned': "text-blue-600",
     'rider-arriving': "text-purple-600",
+    'parcel-picked-up': 'text-yellow-600',
+    'delivered': 'text-green-600',
 };
 
 

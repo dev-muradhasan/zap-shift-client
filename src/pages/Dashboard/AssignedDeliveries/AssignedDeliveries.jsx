@@ -47,7 +47,7 @@ const AssignedDeliveries = () => {
         const statusInfo = { deliveryStatus, workStatus:parcel.riderId };
         axiosSecure.patch(`parcels/${parcel._id}/status`, statusInfo)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 if (res.data.modifiedCount) {
                     refetch()
                     Swal.fire({
@@ -60,6 +60,44 @@ const AssignedDeliveries = () => {
                 }
             })
     }
+
+
+    const handleReject = async (parcel) => {
+        const result = await Swal.fire({
+            title: "Reject this parcel?",
+            text: "The parcel will be returned to the admin for reassignment.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Reject",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: "#d33",
+        });
+        if (!result.isConfirmed) return;
+        try {
+            const res = await axiosSecure.patch(
+                `/parcels/${parcel._id}/reject`
+            );
+            if (res.data.parcelResult?.modifiedCount > 0) {
+                await refetch();
+                Swal.fire({
+                    icon: "success",
+                    title: "Parcel Rejected",
+                    text: "The rider is available again.",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text:
+                    error.response?.data?.message ||
+                    "Could not reject the parcel.",
+            });
+        }
+    };
+
 
     const formatDate = (date) => {
         if (!date) return "N/A";
@@ -333,7 +371,7 @@ const AssignedDeliveries = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => handleDelivery(parcel, 'pending-pickup', 'warning', 'You have rejected this delivery.')}
+                                            onClick={() => handleReject(parcel, 'pending-pickup', 'warning', 'You have rejected this delivery.')}
                                             className="btn flex-1 border border-red-200 bg-white text-red-600 hover:bg-red-50"
                                         >
                                             <FaTimes />
