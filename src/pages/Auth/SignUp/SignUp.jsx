@@ -6,6 +6,7 @@ import useAuth from "../../../hooks/useAuth";
 import GoogleSignIn from "../SocialLogin/GoogleSignIn";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useAxios from "../../../hooks/useAxios";
 
 
 const SignUp = () => {
@@ -15,6 +16,7 @@ const SignUp = () => {
     const { registerUser, updateUserProfile } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosInstance = useAxios();
 
     const uploadImage = async (imageFile) => {
         const formData = new FormData();
@@ -63,8 +65,8 @@ const SignUp = () => {
                 photoURL: photoURL,
             };
             // Save user in database
-            const res = await axios.post(
-                "http://localhost:3000/users",
+            const res = await axiosInstance.post(
+                "/users",
                 userInfo,
                 {
                     headers: {

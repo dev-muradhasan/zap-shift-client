@@ -5,12 +5,12 @@ import { HiMenu, HiX } from "react-icons/hi";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { FaUserCircle } from "react-icons/fa";
-
+import { BeatLoader } from "react-spinners";
 
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const { user, logOut } = useAuth();
+    const { user, logOut, loading } = useAuth();
 
     const handleSignOut = () => {
         logOut()
@@ -55,7 +55,9 @@ const Navbar = () => {
                     </div>
 
                     {/* Right Side */}
-                    <div className="hidden items-center sm:flex">
+                    {loading ?
+                    <BeatLoader color="#36d7b7" /> 
+                    : <div className="hidden items-center sm:flex">
                         {
                             user ? (<div className="dropdown dropdown-end">
                                 <div
@@ -141,7 +143,8 @@ const Navbar = () => {
                             )
                         }
 
-                    </div>
+                    </div>}
+                   
 
                     {/* Mobile Menu Button */}
                     <button

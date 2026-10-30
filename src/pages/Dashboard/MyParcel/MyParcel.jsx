@@ -83,11 +83,14 @@ const MyParcel = () => {
                         <thead>
                             <tr className="border-b border-base-200 bg-gray-50 text-primary">
                                 <th className="whitespace-nowrap font-bold">Name</th>
-                                <th className="min-w-37.5 font-bold">
+                                <th className=" font-bold">
                                     Recipient Info
                                 </th>
                                 <th className="whitespace-nowrap font-bold">
                                     Delivery Status
+                                </th>
+                                <th className="whitespace-nowrap font-bold">
+                                    Tracking Id
                                 </th>
                                 <th className="whitespace-nowrap font-bold">
                                     Amount
@@ -107,11 +110,11 @@ const MyParcel = () => {
                                     key={parcel._id || index}
                                     className={`border-b border-base-200 hover:bg-[#F0F7F7] even:bg-gray-100 odd:bg-white transition-colors`}
                                 >
-                                    <td className="max-w-32.5 whitespace-normal wrap-break-word font-medium text-gray-600">
+                                    <td className=" whitespace-normal wrap-break-word font-medium text-gray-600">
                                         {parcel.parcelName}
                                     </td>
 
-                                    <td className="min-w-37.5 py-2">
+                                    <td className=" py-2">
                                         {parcel.receiverName && (
                                             <p className="mb-1 font-semibold text-primary">
                                                 {parcel.receiverName}
@@ -131,7 +134,7 @@ const MyParcel = () => {
 
                                     <td className="whitespace-nowrap">
                                         {parcel.deliveryStatus && <span
-                                            className={`px-3 py-1.5 text-sm font-medium rounded-sm ${statusColors[parcel.deliveryStatus]
+                                            className={`${statusColors[parcel.deliveryStatus]
                                                 }`}
                                         >
                                             {parcel.deliveryStatus.split('-').join(' ')}
@@ -140,13 +143,18 @@ const MyParcel = () => {
                                     </td>
 
                                     <td className="whitespace-nowrap text-gray-600">
+                                        <Link to={`/track-parcel/${parcel.trackingId}`}>
+                                            {parcel.trackingId}
+                                        </Link>
+                                    </td>
+                                    <td className="whitespace-nowrap text-gray-600">
                                         $ {parcel.cost}
                                     </td>
 
                                     <td className="whitespace-nowrap">
                                         {
                                             parcel.paymentStatus === "paid"
-                                                ? <span className="btn btn-sm rounded-full border border-[#CAEB66] bg-[#CAEB66]/20  font-bold text-[#03373D] shadow-sm ">
+                                                ? <span className="btn btn-sm rounded-full border border-[#CAEB66] bg-[#CAEB66]/20 font-bold text-[#03373D] shadow-sm ">
                                                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#03373D] text-[#CAEB66]">
                                                         <FaCheck className="" />
                                                     </span>
@@ -161,7 +169,7 @@ const MyParcel = () => {
 
                                     <td>
                                         <div className="flex items-center gap-2">
-                                            <Link to={`/dashboard/parcels/${parcel._id}`} className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm">
+                                            <Link to={`/dashboard/parcels/${parcel._id}`} className="btn btn-sm min-h-8 border-none bg-[#E5F0F2]  text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm">
                                                 <FaEye />
                                                 View
                                             </Link>
@@ -170,7 +178,7 @@ const MyParcel = () => {
                                                 onClick={() =>
                                                     handleParcelDelete(parcel._id)
                                                 }
-                                                className="btn btn-sm min-h-8 border-none bg-red-50 px-3 text-xs text-red-500 hover:bg-red-100 sm:text-sm"
+                                                className="btn btn-sm min-h-8 border-none bg-red-50 text-xs text-red-500 hover:bg-red-100 sm:text-sm"
                                             >
                                                 <FaTrash />
                                                 Delete

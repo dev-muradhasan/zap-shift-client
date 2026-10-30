@@ -4,7 +4,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const ErrorPage = () => {
     return (
-        <div className="min-h-screen my-5">
+        <div className="min-h-screen">
 
             <div className="w-full min-h-125 bg-white rounded-2xl flex flex-col items-center justify-center text-center px-6">
 

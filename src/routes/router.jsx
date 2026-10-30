@@ -28,6 +28,9 @@ import axios from "axios";
 import AssignedDeliveries from "../pages/Dashboard/AssignedDeliveries/AssignedDeliveries";
 import RiderRoute from "./RiderRoute";
 import CompletedDeliveries from "../pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
+import TrackParcel from "../pages/TrackParcel/TrackParcel";
+
+
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +50,10 @@ export const router = createBrowserRouter([
             {
                 path: '/about',
                 Component: AboutUs,
+            },
+            {
+                path: '/track-parcel/:trackingId',
+                element: <TrackParcel></TrackParcel>,
             },
             {
                 path: '/rider',

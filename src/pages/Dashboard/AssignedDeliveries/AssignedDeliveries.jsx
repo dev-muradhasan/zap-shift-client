@@ -44,7 +44,7 @@ const AssignedDeliveries = () => {
     });
 
     const handleDelivery = (parcel, deliveryStatus, icon, title) => {
-        const statusInfo = { deliveryStatus, workStatus:parcel.riderId };
+        const statusInfo = { deliveryStatus, riderId:parcel.riderId, trackingId:parcel.trackingId };
         axiosSecure.patch(`parcels/${parcel._id}/status`, statusInfo)
             .then(res => {
                 // console.log(res.data);

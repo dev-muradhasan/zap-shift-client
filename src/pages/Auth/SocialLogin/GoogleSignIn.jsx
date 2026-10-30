@@ -2,22 +2,25 @@ import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useAxios from "../../../hooks/useAxios";
 
 
 const GoogleSignIn = () => {
-    const { googleSignIn } = useAuth();
+    const { googleSignIn, setLoading } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosInstance = useAxios();
 
     const handleGoogleLogin = async () => {
+        setLoading(true)
         try {
             const result = await googleSignIn();
             const user = result.user;
             // Get Firebase ID token
             const token = await user.getIdToken();
             // Check if user exists in MongoDB
-            const res = await axios.get(
-                "http://localhost:3000/users/check",
+            const res = await axiosInstance.get(
+                "/users/check",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -31,8 +34,8 @@ const GoogleSignIn = () => {
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                 };
-                await axios.post(
-                    "http://localhost:3000/users",
+                await axiosInstance.post(
+                    "/users",
                     userInfo,
                     {
                         headers: {
@@ -56,6 +59,7 @@ const GoogleSignIn = () => {
                 toast.error("Google login failed. Please try again.");
             }
         }
+        setLoading(false)
     };
 
     return (
