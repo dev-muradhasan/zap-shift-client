@@ -8,7 +8,7 @@ import { Link } from "react-router";
 
 
 const statusColors = {
-    'pending-pickup' : "text-black",
+    'payment-complete': "text-black",
     'rider-assigned': "text-blue-600",
     'rider-arriving': "text-purple-600",
     'parcel-picked-up': 'text-yellow-600',
@@ -20,14 +20,14 @@ const MyParcel = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const {isLoading, data: parcels = [], refetch } = useQuery({
+    const { isLoading, data: parcels = [], refetch } = useQuery({
         queryKey: ['my-parcel', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`)
             return res.data
         }
     })
-    if(isLoading){
+    if (isLoading) {
         return <Loading></Loading>
     }
 
@@ -66,6 +66,7 @@ const MyParcel = () => {
             receiverName: parcel.receiverName,
             receiverAddress: parcel.receiverAddress,
             receiverPhnNb: parcel.receiverPhnNb,
+            trackingId: parcel.trackingId
         };
         const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
         window.location.assign(res.data.url);
@@ -139,7 +140,7 @@ const MyParcel = () => {
                                         >
                                             {parcel.deliveryStatus.split('-').join(' ')}
                                         </span>}
-                                       
+
                                     </td>
 
                                     <td className="whitespace-nowrap text-gray-600">

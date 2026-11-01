@@ -44,7 +44,7 @@ const AssignedDeliveries = () => {
     });
 
     const handleDelivery = (parcel, deliveryStatus, icon, title) => {
-        const statusInfo = { deliveryStatus, riderId:parcel.riderId, trackingId:parcel.trackingId };
+        const statusInfo = { deliveryStatus, riderId: parcel.riderId, trackingId: parcel.trackingId };
         axiosSecure.patch(`parcels/${parcel._id}/status`, statusInfo)
             .then(res => {
                 // console.log(res.data);
@@ -371,7 +371,7 @@ const AssignedDeliveries = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => handleReject(parcel, 'pending-pickup', 'warning', 'You have rejected this delivery.')}
+                                            onClick={() => handleReject(parcel, 'payment-complete', 'warning', 'You have rejected this delivery.')}
                                             className="btn flex-1 border border-red-200 bg-white text-red-600 hover:bg-red-50"
                                         >
                                             <FaTimes />
