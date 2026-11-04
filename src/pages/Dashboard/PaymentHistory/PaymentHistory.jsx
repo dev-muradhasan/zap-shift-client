@@ -24,110 +24,101 @@ const PaymentHistory = () => {
     }
 
     return (
-        <div className="w-full min-w-0">
-            <h2 className="mb-6 text-3xl font-bold text-primary sm:text-4xl">
-                Payment History: {payments.length}
-            </h2>
+      <div className="w-full min-w-0">
+        <h2 className="mb-6 text-3xl font-bold text-primary sm:text-4xl">
+          Payment History: {payments.length}
+        </h2>
 
-            <div className="w-full min-w-0 overflow-hidden rounded-xl border border-base-200 bg-white">
-                <div className="w-full overflow-x-auto">
-                    <table className="table w-full min-w-187.5 text-xs sm:text-sm">
-                        <thead>
-                            <tr className="border-b border-base-200 bg-gray-50 text-primary">
-                                <th className="whitespace-nowrap font-bold">
-                                    Parcel Info
-                                </th>
+        <div className="w-full min-w-0 overflow-hidden rounded-xl border border-base-200 bg-white">
+          <div className="w-full overflow-x-auto">
+            <table className="table w-full min-w-187.5 text-xs sm:text-sm">
+              <thead>
+                <tr className="border-b border-base-200 bg-gray-50 text-primary">
+                  <th className="whitespace-nowrap font-bold">Parcel Info</th>
 
-                                <th className="min-w-37.5 font-bold">
-                                    Recipient Info
-                                </th>
+                  <th className="min-w-37.5 font-bold">Recipient Info</th>
 
-                                <th className="whitespace-nowrap font-bold">
-                                    Tracking Number
-                                </th>
+                  <th className="whitespace-nowrap font-bold">
+                    Tracking Number
+                  </th>
 
-                                <th className="whitespace-nowrap font-bold">
-                                    Transaction Id
-                                </th>
+                  <th className="whitespace-nowrap font-bold">
+                    Transaction Id
+                  </th>
 
-                                <th className="whitespace-nowrap font-bold">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
+                  <th className="whitespace-nowrap font-bold">Action</th>
+                </tr>
+              </thead>
 
-                        <tbody>
-                            {payments.map((payment, index) => (
-                                <tr
-                                    key={payment._id || index}
-                                    className={`border-b hover:bg-[#F0F7F7] border-base-200 even:bg-gray-100 odd:bg-white transition-colors`}
-                                >
-                                    {/* Parcel Info */}
-                                    <td className="max-w-32.5 whitespace-normal wrap-break-word font-medium text-gray-600">
-                                        {payment.parcelName}
-                                    </td>
+              <tbody>
+                {payments.map((payment, index) => (
+                  <tr
+                    key={payment._id || index}
+                    className={`border-b hover:bg-[#F0F7F7] border-base-200 even:bg-gray-100 odd:bg-white transition-colors`}
+                  >
+                    {/* Parcel Info */}
+                    <td className="max-w-32.5 whitespace-normal wrap-break-word font-medium text-gray-600">
+                      {payment.parcelName}
+                    </td>
 
-                                    {/* Recipient Info */}
-                                    <td className="min-w-37.5 py-2">
-                                        {payment.receiverName && (
-                                            <p className="mb-1 font-semibold text-primary">
-                                                {payment.receiverName}
-                                            </p>
-                                        )}
+                    {/* Recipient Info */}
+                    <td className="min-w-37.5 py-2">
+                      {payment.receiverName && (
+                        <p className="mb-1 font-semibold text-primary">
+                          {payment.receiverName}
+                        </p>
+                      )}
 
-                                        <p className="whitespace-pre-line wrap-break-word text-gray-600">
-                                            {payment.receiverAddress}
-                                        </p>
+                      <p className="whitespace-pre-line wrap-break-word text-gray-600">
+                        {payment.receiverAddress}
+                      </p>
 
-                                        {payment.receiverPhnNb && (
-                                            <p className="mt-1 whitespace-nowrap text-gray-600">
-                                                {payment.receiverPhnNb}
-                                            </p>
-                                        )}
-                                    </td>
+                      {payment.receiverPhnNb && (
+                        <p className="mt-1 whitespace-nowrap text-gray-600">
+                          {payment.receiverPhnNb}
+                        </p>
+                      )}
+                    </td>
 
-                                    {/* Tracking Number */}
-                                    <td className="whitespace-nowrap text-gray-600">
-                                        {payment.trackingId || "N/A"}
-                                    </td>
+                    {/* Tracking Number */}
+                    <td className="whitespace-nowrap text-gray-600">
+                      <Link to={`/track-parcel/${payment.trackingId}`}>
+                        {payment.trackingId || "N/A"}
+                      </Link>
+                    </td>
 
-                                    {/* transaction id */}
-                                    <td className="whitespace-nowrap">
-                                        <div className="flex items-center gap-1 text-primary font-medium">
-                                            <span>
-                                                {payment.transactionId}
-                                            </span>
-                                        </div>
-                                    </td>
+                    {/* transaction id */}
+                    <td className="whitespace-nowrap">
+                      <div className="flex items-center gap-1 text-primary font-medium">
+                        <span>{payment.transactionId}</span>
+                      </div>
+                    </td>
 
-                                    {/* Action */}
-                                    <td>
-                                        <Link
-                                            to={`/dashboard/parcels/${payment.parcelId}`}
-                                            className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm"
-                                        >
-                                            <FaEye />
-                                            View
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
+                    {/* Action */}
+                    <td>
+                      <Link
+                        to={`/dashboard/parcels/${payment.parcelId}`}
+                        className="btn btn-sm min-h-8 border-none bg-[#E5F0F2] px-3 text-xs text-gray-800 hover:bg-[#d5e5e8] sm:text-sm"
+                      >
+                        <FaEye />
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
 
-                            {payments.length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={5}
-                                        className="py-10 text-center text-gray-500"
-                                    >
-                                        No payment history found.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                {payments.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="py-10 text-center text-gray-500">
+                      No payment history found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     );
 };
 
